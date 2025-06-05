@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <title>thebillyorr</title>
   <style>
     body, html {
@@ -13,6 +13,15 @@
       background-color: #201c1c;
       color: #ffffff;
       overflow: auto;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      list-style: none;
     }
 
     .header {
@@ -26,7 +35,7 @@
 
     .header h1 {
       font-family: 'Roboto Slab', serif;
-      font-size: 12vh; /* Increased font size */
+      font-size: 12vh;
       font-style: italic;
       margin: 0;
     }
@@ -40,7 +49,6 @@
       height: 20px;
       border-right: 2px solid #fff;
       border-bottom: 2px solid #fff;
-      transition: opacity 5s ease;
       animation: flash 5s infinite;
     }
 
@@ -54,32 +62,49 @@
       justify-content: center;
       background-color: #201c1c;
       padding: 20px;
+      gap: 20px;
     }
 
     #menu button {
+      position: relative;
       cursor: pointer;
-      padding: 10px 20px;
-      margin: 0 10px;
-      background-color: transparent;
-      color: #fff;
-      font-size: 16px;
-      font-family: Arial, sans-serif;
-      transition: color 0.3s, text-shadow 0.3s;
+      background: none;
       border: none;
-      text-decoration: none;
-      font-weight: normal;
+      color: #fff;
+      font-size: 18px;
+      font-family: Arial, sans-serif;
+      padding: 10px;
+      transition: color 0.3s ease;
     }
 
-    #menu button:hover {
-      color: #ccc;
-      text-shadow: 1px 1px 2px #666;
+    #menu button::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background: #fff;
+      transition: width 0.3s ease;
+    }
+
+    #menu button:hover::after {
+      width: 100%;
+    }
+
+    #menu button.active {
+      font-weight: bold;
+    }
+
+    #menu button.active::after {
+      width: 100%;
     }
 
     .resume {
-      display: block;
       width: 100%;
       max-width: 800px;
       margin: auto;
+      text-align: center;
     }
 
     .content-section {
@@ -90,75 +115,100 @@
       display: block;
     }
 
-    #experience, #certifications {
-      list-style: none;
-      padding: 0;
-    }
-
     #experience li, #certifications li {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 10px 0;
-      height: 121px; /* Ensuring height consistency */
+      padding: 20px 0;
+      min-height: 130px;
     }
 
     .logo {
       width: 100px;
       height: 100px;
+      object-fit: contain;
+      flex-shrink: 0;
       margin-right: 40px;
     }
 
     .job-details {
+      width: 320px;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      text-align: left;
     }
 
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column; /* Stack elements vertically on smaller screens */
-  }
+    hr {
+      width: 100%;
+      max-width: 400px;
+      margin: 10px auto;
+      border: 0;
+      border-top: 1px solid #444;
+    }
 
-  #cover {
-    height: 45vh !important;
-    width: auto !important; /* Maintain aspect ratio */
-    margin-bottom: 20px !important; /* Add some space below the image */
-  }
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+      }
 
-  #title h1 {
-    font-size: 5vh !important; /* Reduce font size for smaller screens */
-    margin-left: 1vh;
-    margin-right: 1vh;
-  }
+      #cover {
+        height: 45vh !important;
+        width: auto !important;
+        margin-bottom: 20px !important;
+      }
 
-  #title {
-    display: flex;
-  }
+      #title h1 {
+        font-size: 5vh !important;
+        margin-left: 1vh;
+        margin-right: 1vh;
+      }
 
-   .resume {
-    font-size: 14px; /* Adjust font size for the resume section */
-  }
-}
+      #title {
+        display: flex;
+      }
 
+      .resume {
+        font-size: 14px;
+      }
 
+      #experience li, #certifications li {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
 
+      .logo {
+        margin: 0 0 10px 0;
+      }
 
-
-
+      .job-details {
+        width: 100%;
+        max-width: 320px;
+        text-align: center;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
   </style>
   <script>
     function showSection(sectionId) {
-      var sections = document.querySelectorAll('.content-section');
-      sections.forEach(section => {
-        section.style.display = 'none';
-
+      document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
       });
-      var activeSection = document.getElementById(sectionId);
-      if (activeSection) {
-        activeSection.style.display = 'block';
-      }
+      document.getElementById(sectionId).classList.add('active');
+
+      document.querySelectorAll('#menu button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelector(`#menu button[data-target="${sectionId}"]`).classList.add('active');
     }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      showSection('experience');
+    });
   </script>
 </head>
 <body>
@@ -169,100 +219,96 @@
         <h1>BILLY</h1>
         <h1>ORR</h1>
       </div>
-        <div style="display: flex; gap: 1rem; margin-top: 1rem; justify-content: center">
-            <a href="https://www.linkedin.com/in/thebillyorr/" target="_blank">
-                <img src="./linkedin.png" style="height: 5vh; width: 5vh;" alt="LinkedIn">
-            </a>
-            <a href="https://github.com/thebillyorr" target="_blank">
-                <img src="./github.png" style="height: 5vh; width: 5vh;" alt="GitHub">
-            </a>
-            
-        </div>
+      <div style="display: flex; gap: 1rem; margin-top: 1rem; justify-content: center">
+        <a href="https://www.linkedin.com/in/thebillyorr/" target="_blank">
+          <img src="./linkedin.png" style="height: 5vh; width: 5vh;" alt="LinkedIn">
+        </a>
+        <a href="https://github.com/thebillyorr" target="_blank">
+          <img src="./github.png" style="height: 5vh; width: 5vh;" alt="GitHub">
+        </a>
+      </div>
     </div>
     <div class="scroll-arrow"></div>
   </div>
+
   <div class="resume">
     <div id="menu">
-      <button style="font-size: 20px; font-family: sans-serif;" onclick="showSection('experience')">Experience</button>
-      <button style="font-size: 20px; font-family: sans-serif;" onclick="showSection('certifications')">Certifications</button>
+      <button data-target="experience" onclick="showSection('experience')">Experience</button>
+      <button data-target="certifications" onclick="showSection('certifications')">Certifications</button>
     </div>
-    <ul id="experience" class="content-section active">
-      
+
+    <ul id="experience" class="content-section">
+      <li>
+        <img src="./microsoft.png" class="logo">
+        <div class="job-details">
+          <div style="font-size: 20px;">Security Program Manager Intern</div>
+          <br>
+          <div style="color: lightgrey;"><i>Microsoft | Redmond, WA</i></div>
+          <div style="color: lightgrey;"><i>May. 2025 - Aug. 2025</i></div>
+        </div>
+      </li>
+      <hr>
       <li>
         <img src="./sap.png" class="logo">
         <div class="job-details">
-          <div style="font-size: 20px; font-family: sans-serif;">Security Engineer Intern</div>
+          <div style="font-size: 20px;">Security Engineer Intern</div>
           <br>
           <div style="color: lightgrey;"><i>SAP | Vancouver, CA</i></div>
-          <div style="color: lightgrey;"><i>Sep. 2024 - Dec. 2024</i></div>
+          <div style="color: lightgrey;"><i>Sep. 2024 - Apr. 2025</i></div>
         </div>
       </li>
-
-      <hr style="width: 45%">
-
+      <hr>
       <li>
         <img src="./intact.png" class="logo">
         <div class="job-details">
-          <div style="font-size: 20px; font-family: sans-serif;">Security Engineer Intern</div>
+          <div style="font-size: 20px;">Security Risk Intern</div>
           <br>
           <div style="color: lightgrey;"><i>Intact Financial | Vancouver, CA</i></div>
           <div style="color: lightgrey;"><i>May 2024 - Aug. 2024</i></div>
         </div>
       </li>
-
-      <hr style="width: 45%">
-
+      <hr>
       <li>
         <img src="./blackberry.png" class="logo">
         <div class="job-details">
-          <div style="font-size: 20px; font-family: sans-serif;">Security Engineer Intern</div>
+          <div style="font-size: 20px;">Security Architecture Intern</div>
           <br>
           <div style="color: lightgrey;"><i>BlackBerry | Waterloo, CA</i></div>
           <div style="color: lightgrey;"><i>Jan. 2024 - Apr. 2024</i></div>
         </div>
       </li>
-
-      <hr style="width: 45%">
-
+      <hr>
       <li>
         <img src="./cyberunit.png" class="logo">
         <div class="job-details">
-          <div style="font-size: 20px; font-family: sans-serif;">Security Engineer Intern</div>
+          <div style="font-size: 20px;">Security Operations Intern</div>
           <br>
           <div style="color: lightgrey;"><i>Cyber Unit | Vancouver, CA</i></div>
           <div style="color: lightgrey;"><i>Oct. 2021 - Aug. 2022</i></div>
         </div>
       </li>
     </ul>
+
     <ul id="certifications" class="content-section">
       <li>
         <img src="./securityplus.png" class="logo">
-        <div class="job-details" style="width: 25%">
-          <div style="font-size: 20px; font-family: sans-serif;">Security+</div>
+        <div class="job-details">
+          <div style="font-size: 20px;">Security+</div>
           <br>
           <div style="color: lightgrey;"><i>CompTIA</i></div>
         </div>
       </li>
-
-      <hr style="width: 45%">
-
-      <li style="border-bottom: none">
+      <hr>
+      <li>
         <img src="./cc.png" class="logo">
-        <div class="job-details" style="width: 25%">
-          <div style="font-size: 20px; font-family: sans-serif;">CC</div>
+        <div class="job-details">
+          <div style="font-size: 20px;">CC</div>
           <br>
           <div style="color: lightgrey;"><i>ISC2</i></div>
         </div>
       </li>
-
-      <!-- FILLER LI TO MAKE THE CONTENT SECTIONS EVEN -->
-      <!-- HARDCODED HEIGHT TO MATCH LOGO HEIGHT -->
       <li>
-        <div class="job-details" style="height: 100px;">
-          <div style="font-size: 20px; font-family: sans-serif;"></div>
-          <br>
-          <div style="color: lightgrey;"><i></i></div>
-        </div>
+        <div class="job-details" style="height: 100px;"></div>
       </li>
     </ul>
   </div>
