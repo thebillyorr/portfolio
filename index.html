@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Personal Universe — A modular playground">
+    <title>Personal Universe</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header id="hero">
+        <h1>John Doe</h1>
+        <p>Exploring the intersections of design & technology</p>
+        <div class="scroll-cue">Scroll to explore</div>
+    </header>
+
+    <button class="theme-toggle" aria-label="Toggle dark mode">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+    </button>
+
+    <main id="playground" aria-label="Personal Universe Playground">
+        <!-- Modules will be inserted here via JS -->
+    </main>
+
+    <div id="moduleDialog" class="dialog" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="dialog-title">
+        <div class="dialog-backdrop"></div>
+        <div class="dialog-content">
+            <button class="dialog-close" aria-label="Close">✕</button>
+            <h2 id="dialog-title"></h2>
+            <div class="dialog-body">
+                <p class="placeholder">Module content will appear here.</p>
+                <div class="dialog-cta">
+                    <button class="cta-button">Learn More</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
