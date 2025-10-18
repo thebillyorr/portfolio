@@ -96,7 +96,8 @@ body {
         transparent calc(var(--grid-dot-size) + 1px)
     );
     background-size: var(--grid-size) var(--grid-size);
-    background-position: var(--grid-offset-x) var(--grid-offset-y);
+    /* include phase so visual dots line up with snapping math (origin + phase) */
+    background-position: var(--grid-phase-x) var(--grid-phase-y);
 }
 
 /* Card Styles */
@@ -151,14 +152,6 @@ body {
 .module-card.dragging {
     cursor: grabbing;
     box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-}
-
-@media (max-width: 767px) {
-    .module-card {
-        position: relative;
-        margin: 16px;
-        cursor: pointer;
-    }
 }
 
 @media (min-width: 768px) {
@@ -292,3 +285,4 @@ body {
         transform: none;
     }
 }
+
