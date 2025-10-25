@@ -10,6 +10,8 @@ let GRID_OFFSET_Y = 0;
 let GRID_PHASE_X = 0;
 let GRID_PHASE_Y = 0;
 
+const EPS = 1e-4;
+
 // ---- Size presets (in grid cells) ----
 const PRESETS = {
   S: { w: 5,  h: 4 },  // 5x4 cells
@@ -64,12 +66,6 @@ const STORAGE_KEYS = {
     layout: 'pu_layout_v1'
 };
 
-// State
-let isDragging = false;
-let isResizing = false;
-let startX, startY, startWidth, startHeight;
-let currentElement = null;
-
 // Utility function
 
 function snapToGrid(valuePx, originPx, phasePx, gridPx) {
@@ -89,7 +85,6 @@ function clamp(v, min, max) {
 
 
 
-// Drag functionality
 function attachDrag(card) {
   let dragging = false;
   let startX = 0, startY = 0;
@@ -133,11 +128,13 @@ function attachDrag(card) {
 
     card.style.left = `${newLeft}px`;
     card.style.top  = `${newTop}px`;
+    updateOverlapsForActive(card);
   });
 
   card.addEventListener('pointerup', (e) => {
     if (!dragging) return;
     dragging = false;
+    clearAllOverlaps();
 
     const bounds = getBounds();
     const w = card.offsetWidth;
@@ -146,6 +143,7 @@ function attachDrag(card) {
     const currentLeft = parseFloat(card.style.left);
     const currentTop  = parseFloat(card.style.top);
 
+    // Snap position to grid (no size change here)
     const snappedLeft = clamp(
       snapToGrid(currentLeft, GRID_OFFSET_X, GRID_PHASE_X, GRID_SIZE),
       bounds.left, bounds.right - w
@@ -155,9 +153,11 @@ function attachDrag(card) {
       bounds.top,  bounds.bottom - h
     );
 
-    // Animate position only
+    // First animate the dragged card to the snapped pos (nice feedback)
     animateSnapTo(card, { left: snappedLeft, top: snappedTop, width: w, height: h }, () => {
-      persistLayout(card);
+      // Then resolve collisions by shoving others (like resize)
+
+      resolveDragWithShove(card, snappedLeft, snappedTop);
     });
 
     card.classList.remove('dragging');
@@ -167,13 +167,15 @@ function attachDrag(card) {
   });
 
   card.addEventListener('pointercancel', () => {
-    if (dragging) {
-      dragging = false;
-      card.classList.remove('dragging');
-      card._dragMoved = false;
-    }
+    if (!dragging) return;
+    dragging = false;
+    clearAllOverlaps();
+    card.classList.remove('dragging');
+    card._dragMoved = false;
   });
 }
+
+
 
 
 // Resize functionality
@@ -187,6 +189,7 @@ function attachResize(card, handle) {
         handle.setPointerCapture(e.pointerId);
         e.preventDefault();
         document.body.style.userSelect = 'none';
+        card.classList.add('resizing')
 
         startW = card.offsetWidth;
         startH = card.offsetHeight;
@@ -209,69 +212,11 @@ function attachResize(card, handle) {
   resizing = false;
   handle.releasePointerCapture(e.pointerId);
   document.body.style.userSelect = '';
+  card.classList.remove('resizing')
 
-  const wRaw = card.offsetWidth;
-  const hRaw = card.offsetHeight;
-
-  const key = nearestPreset(wRaw, hRaw);
-
-  // Compute target rect and animate to it
-  const target = computePresetRect(card, key);
-  animateSnapTo(card, target, () => {
-    card.dataset.preset = key;
-    persistLayout(card);
-  });
+  const desiredKey = nearestPreset(card.offsetWidth, card.offsetHeight);
+  resolveResizeWithShove(card, desiredKey);
 });
-
-
-}
-
-// Dialog Management
-function openDialog(data) {
-    const dialog = document.getElementById('moduleDialog');
-    const title = dialog.querySelector('#dialog-title');
-    
-    title.textContent = data.title;
-    dialog.setAttribute('aria-hidden', 'false');
-    
-    trapFocus(dialog);
-}
-
-function closeDialog() {
-    const dialog = document.getElementById('moduleDialog');
-    dialog.setAttribute('aria-hidden', 'true');
-}
-
-// Minimal focus trap for dialogs (keeps tab focus inside dialog while open)
-function trapFocus(container) {
-    const focusable = Array.from(container.querySelectorAll('a[href], button, textarea, input, select'));
-    if (focusable.length === 0) return;
-
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-
-    function onKey(e) {
-        if (e.key !== 'Tab') return;
-        if (e.shiftKey && document.activeElement === first) {
-            e.preventDefault();
-            last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-            e.preventDefault();
-            first.focus();
-        }
-    }
-
-    container.addEventListener('keydown', onKey);
-    // When dialog closes, remove listener
-    const observer = new MutationObserver(() => {
-        if (container.getAttribute('aria-hidden') === 'true') {
-            container.removeEventListener('keydown', onKey);
-            observer.disconnect();
-        }
-    });
-    observer.observe(container, { attributes: true });
-    // Focus first element
-    first.focus();
 }
 
 // Simple createModule factory used by initialization code
@@ -372,57 +317,63 @@ function syncGridConstants() {
   root.style.setProperty('--grid-offset-y', GRID_OFFSET_Y + 'px');
 }
 
+function mountModule({ id, title, proof = 'click to expand', preset = 'S', leftCells = 1, topCells = 1 }) {
+  const card = createModule({ id, title, proof });
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Theme first
-  initializeTheme();
-
-  // Grid/dots single source of truth
-  syncGridConstants();
-
-  // Create single test card AFTER constants are synced
-  const card = createModule({
-    id: 'sample',
-    title: 'My Universe',
-    proof: 'click to expand'
-  });
-
-  // Try to restore saved layout/preset
-  const saved = getSavedLayout('sample');
+  // Try restore
+  const saved = getSavedLayout(id);
   if (saved && Number.isFinite(saved.left) && Number.isFinite(saved.top)) {
-    // Position first
     card.style.left = saved.left + 'px';
     card.style.top  = saved.top  + 'px';
 
-    // If a preset exists, apply it (ensures exact px that match current GRID_SIZE)
     if (saved.preset && PRESETS[saved.preset]) {
       applyPreset(card, saved.preset);
     } else if (Number.isFinite(saved.width) && Number.isFinite(saved.height)) {
-      // Otherwise honor stored px (then snap width/height to nearest preset for consistency)
       card.style.width  = saved.width  + 'px';
       card.style.height = saved.height + 'px';
       const key = nearestPreset(saved.width, saved.height);
       applyPreset(card, key);
     }
   } else {
-    // First-run defaults: place one cell in from origin and apply Small preset (5x4)
-    card.style.left = (GRID_OFFSET_X + GRID_SIZE) + 'px';
-    card.style.top  = (GRID_OFFSET_Y + GRID_SIZE) + 'px';
-    applyPreset(card, 'S');
+    // First run: place using cell offsets, then apply preset
+    card.style.left = (GRID_OFFSET_X + GRID_SIZE * leftCells) + 'px';
+    card.style.top  = (GRID_OFFSET_Y + GRID_SIZE * topCells)  + 'px';
+    applyPreset(card, preset);
   }
 
   attachDrag(card);
   attachResize(card, card.querySelector('.resizable-handle'));
   playground.appendChild(card);
+  return card;
+}
 
-  // Wire UI
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  initializeTheme();
+  syncGridConstants();
+
+  // Card 1 — small (S)
+  mountModule({
+    id: 'resume',
+    title: 'Resume / Career',
+    preset: 'S',
+    leftCells: 1,
+    topCells: 1
+  });
+
+  // Card 2 — medium wide (M), placed to the right so they don't overlap initially
+  mountModule({
+    id: 'design',
+    title: 'Design / Posters',
+    preset: 'M',
+    leftCells: 8,   // adjust if your viewport is narrow
+    topCells: 1
+  });
+
   document.querySelector('.theme-toggle')?.addEventListener('click', toggleTheme);
-  document.querySelector('.dialog-close')?.addEventListener('click', closeDialog);
-  document.querySelector('.dialog-backdrop')?.addEventListener('click', closeDialog);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDialog(); });
 });
-
-
 
 // Recompute grid constants when the viewport resizes (fixes mobile vs desktop misalignment)
 let resizeTimer = null;
@@ -605,18 +556,319 @@ function animateSnapTo(card, { left, top, width, height }, onDone) {
   setTimeout(cleanup, timeoutMs);
 }
 
-// Compute where a preset would land (respecting bounds) WITHOUT changing the card yet.
-function computePresetRect(card, presetKey) {
-  const { w, h } = presetToPx(presetKey);
-  const bounds = getBounds();
-  const left = parseFloat(card.style.left) || GRID_OFFSET_X;
-  const top  = parseFloat(card.style.top)  || GRID_OFFSET_Y;
+// --- phase-aware helpers ---
+// replace your pxToCol/pxToRow with:
+function pxToCol(xPx) {
+  return Math.floor((xPx - GRID_OFFSET_X - GRID_PHASE_X + EPS) / GRID_SIZE);
+}
+function pxToRow(yPx) {
+  return Math.floor((yPx - GRID_OFFSET_Y - GRID_PHASE_Y + EPS) / GRID_SIZE);
+}
 
-  return {
-    left: Math.min(left, bounds.right  - w),
-    top:  Math.min(top,  bounds.bottom - h),
-    width: w,
-    height: h,
-    key: presetKey
+function colToPx(col) {
+  return col * GRID_SIZE + GRID_OFFSET_X + GRID_PHASE_X;
+}
+function rowToPx(row) {
+  return row * GRID_SIZE + GRID_OFFSET_Y + GRID_PHASE_Y;
+}
+
+
+function rectsIntersect(a, b) {
+  return !(a.col + a.w <= b.col ||
+           b.col + b.w <= a.col ||
+           a.row + a.h <= b.row ||
+           b.row + b.h <= a.row);
+}
+function rectWithinBounds(rect, bounds) {
+  return rect.col >= 0 &&
+         rect.row >= 0 &&
+         rect.col + rect.w <= bounds.cols &&
+         rect.row + rect.h <= bounds.rows;
+}
+function presetCells(key) {
+  const p = PRESETS[key];
+  return { w: p.w, h: p.h };
+}
+function getBoundsCells() {
+  const r = playground.getBoundingClientRect();
+  const innerW = r.width  - 2 * GRID_OFFSET_X;
+  const innerH = r.height - 2 * GRID_OFFSET_Y;
+  // how many full cells fit starting at the phased origin
+  const cols = Math.max(0, Math.floor((innerW - GRID_PHASE_X + EPS) / GRID_SIZE));
+  const rows = Math.max(0, Math.floor((innerH - GRID_PHASE_Y + EPS) / GRID_SIZE));
+  return { cols, rows };
+}
+
+
+function getCardRectCells(card) {
+  const leftPx  = parseFloat(card.style.left)  || GRID_OFFSET_X;
+  const topPx   = parseFloat(card.style.top)   || GRID_OFFSET_Y;
+
+  const presetKey = card.dataset.preset;
+  let wCells, hCells;
+  if (presetKey && PRESETS[presetKey]) {
+    ({ w: wCells, h: hCells } = presetCells(presetKey));
+  } else {
+    const wPx = parseFloat(card.style.width)  || card.offsetWidth;
+    const hPx = parseFloat(card.style.height) || card.offsetHeight;
+    wCells = Math.max(1, Math.round((wPx + EPS) / GRID_SIZE));
+    hCells = Math.max(1, Math.round((hPx + EPS) / GRID_SIZE));
+  }
+
+  const col = pxToCol(leftPx);
+  const row = pxToRow(topPx);
+
+  return { col, row, w: wCells, h: hCells };
+}
+
+
+function getLayoutCells() {
+  const map = {};
+  document.querySelectorAll('.module-card').forEach(c => {
+    const id = c.getAttribute('data-id');
+    map[id] = getCardRectCells(c);
+  });
+  return map;
+}
+function cloneLayout(layout) {
+  const copy = {};
+  for (const [id, r] of Object.entries(layout)) copy[id] = { ...r };
+  return copy;
+}
+function animateToCellRect(card, rectCells, onDone) {
+  const leftPx   = colToPx(rectCells.col);
+  const topPx    = rowToPx(rectCells.row);
+  const widthPx  = rectCells.w * GRID_SIZE;
+  const heightPx = rectCells.h * GRID_SIZE;
+  animateSnapTo(card, { left: leftPx, top: topPx, width: widthPx, height: heightPx }, onDone);
+}
+
+
+function overlapsAny(rect, layout, exceptId = null) {
+  return Object.entries(layout).some(([id, r]) => (id !== exceptId) && rectsIntersect(rect, r));
+}
+
+// Try sliding a rect in one direction until it fits
+function findSlideSpot(rect, dir, layout, bounds, maxSteps = 200) {
+  const step = (r) => {
+    if (dir === 'right') return { ...r, col: r.col + 1 };
+    if (dir === 'left')  return { ...r, col: r.col - 1 };
+    if (dir === 'down')  return { ...r, row: r.row + 1 };
+    return { ...r, row: r.row - 1 }; // 'up'
   };
+  let probe = { ...rect };
+  for (let i = 0; i < maxSteps; i++) {
+    if (rectWithinBounds(probe, bounds) && !overlapsAny(probe, layout)) return probe;
+    probe = step(probe);
+  }
+  return null;
+}
+
+function shove(layout, activeId, targetRect, bounds, visited = new Set(), pushOrder = ['right','down','left','up']) {
+  layout[activeId] = { ...targetRect };
+
+  const blockers = Object.entries(layout)
+    .filter(([id]) => id !== activeId)
+    .filter(([, r]) => rectsIntersect(layout[activeId], r));
+
+  if (blockers.length === 0) return true;
+
+  for (const [blockerId, blockerRect] of blockers) {
+    // Only prevent exact-state cycles, not repeated movement of the same card.
+    const vKey = `${blockerId}:${blockerRect.col},${blockerRect.row}`;
+    if (visited.has(vKey)) return false;
+    visited.add(vKey);
+
+    let moved = false;
+
+    // 1) Minimal-clearance push in each direction
+    for (const dir of pushOrder) {
+      const candidate = pushToTouch(layout[activeId], blockerRect, dir);
+      if (!rectWithinBounds(candidate, bounds)) continue;
+
+      const snapshot = layout[blockerId];
+      layout[blockerId] = candidate;
+
+      if (shove(layout, activeId, layout[activeId], bounds, visited, pushOrder)) {
+        moved = true;
+        break;
+      }
+      layout[blockerId] = snapshot;
+    }
+
+    // 2) If minimal push can’t resolve due to other blockers, fallback to sliding farther
+    if (!moved) {
+      for (const dir of pushOrder) {
+        const spot = findSlideSpot(blockerRect, dir, layout, bounds);
+        if (!spot) continue;
+
+        const snapshot = layout[blockerId];
+        layout[blockerId] = spot;
+
+        if (shove(layout, activeId, layout[activeId], bounds, visited, pushOrder)) {
+          moved = true;
+          break;
+        }
+        layout[blockerId] = snapshot;
+      }
+    }
+
+    if (!moved) return false;
+  }
+
+  return true;
+}
+
+
+
+function resolveDragWithShove(card, snappedLeft, snappedTop) {
+  const id = card.getAttribute('data-id');
+  const bounds = getBoundsCells();
+  const baseLayout = getLayoutCells();
+  const cur = baseLayout[id];
+
+  const target = {
+    col: pxToCol(snappedLeft),
+    row: pxToRow(snappedTop),
+    w: cur.w,
+    h: cur.h
+  };
+
+  const draft = cloneLayout(baseLayout);
+  if (shove(draft, id, target, bounds)) {
+    Object.entries(draft).forEach(([cid, r]) => {
+      const node = document.querySelector(`.module-card[data-id="${cid}"]`);
+      if (!node) return;
+      animateToCellRect(node, r, () => { persistLayout(node); });
+    });
+    return true;
+  }
+
+  const prev = getSavedLayout(id);
+  if (prev && Number.isFinite(prev.left) && Number.isFinite(prev.top)) {
+    animateSnapTo(card, {
+      left: prev.left,
+      top:  prev.top,
+      width:  prev.width  ?? card.offsetWidth,
+      height: prev.height ?? card.offsetHeight
+    }, () => { persistLayout(card); });
+  }
+  return false;
+}
+
+function stepRect(rect, dir) {
+  if (dir === 'right') return { ...rect, col: rect.col + 1 };
+  if (dir === 'left')  return { ...rect, col: rect.col - 1 };
+  if (dir === 'down')  return { ...rect, row: rect.row + 1 };
+  return { ...rect, row: rect.row - 1 }; // 'up'
+}
+
+function resolveResizeWithShove(card, desiredKey) {
+  const id = card.getAttribute('data-id');
+  const bounds = getBoundsCells();
+  const baseLayout = getLayoutCells();
+  const startRect = baseLayout[id];
+
+  // Try desired preset first, then the others as graceful fallback
+  const order = desiredKey === 'L' ? ['L','M','S']
+              : desiredKey === 'M' ? ['M','L','S']
+              : ['S','M','L'];
+
+  for (const key of order) {
+    const size = presetCells(key); // {w,h} in cells
+    const target = { col: startRect.col, row: startRect.row, w: size.w, h: size.h };
+    const draft = cloneLayout(baseLayout);
+
+    // Reuse shove() with default push order
+    if (shove(draft, id, target, bounds)) {
+      // Animate everyone to the drafted layout and persist
+      Object.entries(draft).forEach(([cid, r]) => {
+        const node = document.querySelector(`.module-card[data-id="${cid}"]`);
+        if (!node) return;
+        animateToCellRect(node, r, () => {
+          if (cid === id) node.dataset.preset = key;
+          persistLayout(node);
+        });
+      });
+      return true;
+    }
+  }
+
+  // If nothing fits, revert this card to its previous saved layout (if any)
+  const prev = getSavedLayout(id);
+  if (prev && prev.preset && PRESETS[prev.preset]) {
+    const rect = {
+  col: pxToCol(prev.left),
+  row: pxToRow(prev.top),
+  ...presetCells(prev.preset)
+};
+
+    animateToCellRect(card, rect, () => {
+      card.dataset.preset = prev.preset;
+      persistLayout(card);
+    });
+    return false;
+  }
+
+  return false;
+}
+
+function overlapX(a, b) {
+  const left = Math.max(a.col, b.col);
+  const right = Math.min(a.col + a.w, b.col + b.w);
+  return Math.max(0, right - left);
+}
+function overlapY(a, b) {
+  const top = Math.max(a.row, b.row);
+  const bottom = Math.min(a.row + a.h, b.row + b.h);
+  return Math.max(0, bottom - top);
+}
+
+// Move b just enough in 'dir' to stop overlapping a (still touching).
+function pushToTouch(a, b, dir) {
+  if (dir === 'right') {
+    const dx = (a.col + a.w) - b.col;           // positive when overlapping from left
+    return { ...b, col: b.col + Math.max(1, dx) };
+  }
+  if (dir === 'left') {
+    const dx = (b.col + b.w) - a.col;           // overlap from right
+    return { ...b, col: b.col - Math.max(1, dx) };
+  }
+  if (dir === 'down') {
+    const dy = (a.row + a.h) - b.row;           // overlap from top
+    return { ...b, row: b.row + Math.max(1, dy) };
+  }
+  // 'up'
+  const dy = (b.row + b.h) - a.row;             // overlap from bottom
+  return { ...b, row: b.row - Math.max(1, dy) };
+}
+
+// Fast pixel-overlap check (DOM rectangles)
+function rectsOverlapPx(aEl, bEl) {
+  const a = aEl.getBoundingClientRect();
+  const b = bEl.getBoundingClientRect();
+  return !(a.right <= b.left || a.left >= b.right || a.bottom <= b.top || a.top >= b.bottom);
+}
+
+let _overlapRAF = null;
+function updateOverlapsForActive(activeEl) {
+  // Throttle to animation frame to avoid spamming layouts during drag
+  if (_overlapRAF) return;
+  _overlapRAF = requestAnimationFrame(() => {
+    _overlapRAF = null;
+    const cards = document.querySelectorAll('.module-card');
+    cards.forEach(c => {
+      if (c === activeEl) {
+        c.classList.remove('overlapped');
+        return;
+      }
+      if (rectsOverlapPx(activeEl, c)) c.classList.add('overlapped');
+      else c.classList.remove('overlapped');
+    });
+  });
+}
+
+function clearAllOverlaps() {
+  document.querySelectorAll('.module-card.overlapped')
+    .forEach(c => c.classList.remove('overlapped'));
 }

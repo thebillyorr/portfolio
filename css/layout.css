@@ -1,0 +1,29 @@
+/* Layout / Playground styles */
+#playground {
+    position: relative;
+    height: 100vh;
+    padding: 32px;
+    overflow: auto;
+
+    /* Dots only in content box (inside padding) */
+    background-origin: content-box;
+    background-clip: content-box;
+
+    background-color: transparent; /* let body gradient show through */
+    background-image: radial-gradient(circle at 0 0, var(--grid-dot) var(--grid-dot-size), transparent calc(var(--grid-dot-size) + 1px));
+    background-size: var(--grid-size) var(--grid-size);
+    /* include phase so visual dots line up with snapping math (origin + phase) */
+    background-position: var(--grid-phase-x) var(--grid-phase-y);
+}
+
+@media (min-width: 768px) {
+    #playground {
+        padding: 48px;
+    }
+}
+
+@media (min-width: 1024px) {
+    #playground {
+        padding: 64px;
+    }
+}
