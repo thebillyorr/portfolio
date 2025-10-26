@@ -12,7 +12,9 @@
   --grid-offset-y: 0px;
 
   --border: rgba(0,0,0,0.08);
-  --card-bg: rgba(255,255,255,0.9);
+  --card-bg: rgba(224, 236, 255, 0.92);
+
+
 
   --accent-sage:    #97B1A6;
   --accent-blue:    #9CB7D6;
@@ -26,7 +28,7 @@
   --fg: #EDEDED;
   --grid-dot: rgba(255,255,255,0.12);
   --border: rgba(255,255,255,0.12);
-  --card-bg: rgba(0,0,0,0.9);
+  --card-bg: rgba(15, 18, 23, 0.92);
 }
 
 /* Hero gradient vars (move here so one gradient can span the whole page) */
@@ -34,18 +36,18 @@
   --hero-maxw: 1120px;
   --hero-pad: clamp(24px, 5vw, 64px);
   --hero-radius: 22px;
-  --hero-grad-1: #f7fbff;
-  --hero-grad-2: #e9f0ff;
-  --hero-grad-3: #eef3ff;
+  --hero-grad-1: #f0f6ff;
+  --hero-grad-2: #e0ecff;
+  --hero-grad-3: #d9ecff;
   --hero-key-face: rgba(255,255,255,0.65);
   --hero-key-stroke: rgba(0,0,0,0.06);
   --hero-key-glow: 140, 180, 255;
 }
 
 :root[data-theme="dark"] {
-  --hero-grad-1: #17181b;
-  --hero-grad-2: #1b1e23;
-  --hero-grad-3: #171b21;
+  --hero-grad-1: #0f1217;
+  --hero-grad-2: #151a22;
+  --hero-grad-3: #0d1219;
   --hero-key-face: rgba(0,0,0,0.5);
   --hero-key-stroke: rgba(255,255,255,0.08);
   --hero-key-glow: 120, 170, 255;
@@ -66,7 +68,7 @@ body {
   background-repeat: repeat, no-repeat, no-repeat, no-repeat;
   background-size: 140px 140px, auto, auto, cover;
   background-position: 0 0, 50% 10%, 80% 60%, 0 0;
-  background-blend-mode: soft-light, normal, normal, normal;
+  background-blend-mode: multiply, screen, overlay, normal;
   overflow-x: hidden;
   transition: background-color 0.3s ease;
 }

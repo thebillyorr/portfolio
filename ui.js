@@ -101,9 +101,8 @@ export function openModuleWindow(card) {
   const win = document.createElement('div');
   win.className = 'module-window';
   win.setAttribute('data-source', card.getAttribute('data-id'));
-  const bgColor = themeNow === 'dark' ? 'rgba(45,45,42,0.82)' : 'rgba(246,247,235,0.88)';
   Object.assign(win.style, {
-    background: bgColor,
+    background: 'var(--bg)',
     borderRadius: '14px',
     padding: '18px',
     width: '90vw',
@@ -134,6 +133,7 @@ export function openModuleWindow(card) {
   closeBtn.style.background = 'transparent';
   closeBtn.style.border = 'none';
   closeBtn.style.cursor = 'pointer';
+  closeBtn.style.color = 'var(--fg)';
 
   header.appendChild(hTitle);
   header.appendChild(closeBtn);

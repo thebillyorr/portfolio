@@ -1,74 +1,39 @@
-/* Components: cards, modules, dialogs, toggle, and scroll behaviors */
-.card {
-    position: absolute;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    transition: transform 0.2s ease;
-    touch-action: none; /* Prevent scrolling while dragging on touch devices */
-    user-select: none; /* Prevent text selection while dragging */
-}
+/* Components: module cards, dialogs, and theme toggle */
 
-.card.dragging {
-    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-    transform: scale(1.02);
-}
-
-/* Module Card */
+/* Module Card - Draggable cards in playground */
 .module-card {
-    position: absolute;  /* enable dragging by default */
+    position: absolute;
     width: 320px; 
     height: 240px;
     z-index: 1;
-
     border-radius: 14px;
     border: 1px solid var(--border);
-    outline: 1px dashed rgba(0,0,0,0.15);  /* TEMP debug outline */
     background: var(--card-bg);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
     padding: 16px;
-    cursor: grab;  /* show grab cursor */
-    user-select: none;  /* prevent text selection while dragging */
+    cursor: grab;
+    user-select: none;
+    transition: all 0.2s ease;
+    will-change: left, top, width, height;
+}
+
+.module-card:hover:not(.dragging) {
+    transform: scale(1.02);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.10);
 }
 
 .module-card.dragging,
 .module-card.resizing {
-  cursor: grabbing;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
-  background: rgba(255,255,255,0.45);  /* <-- same translucency vibe as dark */
+    cursor: grabbing;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    backdrop-filter: blur(16px);
+    background: rgba(255,255,255,0.45);
+    z-index: 1000;
+    transition: none;
 }
 
 :root[data-theme="dark"] .module-card.dragging,
 :root[data-theme="dark"] .module-card.resizing {
-  background: rgba(0,0,0,0.45);             /* translucent only while active (dark) */
-}
-
-@media (min-width: 768px) {
-    .module-card {
-        position: absolute;  /* enable dragging on desktop */
-        margin: 0;
-        cursor: grab;
-        will-change: left, top, width, height;
-    }
-}
-
-:root[data-theme="dark"] .module-card {
-    outline-color: rgba(255,255,255,0.2);  /* TEMP debug outline for dark mode */
-}
-
-.module-card:active { cursor: grabbing; }
-
-/* Hover/drag states */
-@media (hover:hover) {
-    .module-card:hover:not(.dragging) {
-        transform: scale(1.02);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.10);
-    }
+    background: rgba(0,0,0,0.45);
 }
 
 .module-title {
@@ -81,17 +46,18 @@
     opacity: 0.7;
 }
 
-/* Resize handle (bottom-right) */
 .module-card .resizable-handle {
     position: absolute;
-    right: 6px; bottom: 6px;
-    width: 12px; height: 12px;
+    right: 6px;
+    bottom: 6px;
+    width: 12px;
+    height: 12px;
     border-right: 2px solid var(--border);
     border-bottom: 2px solid var(--border);
     cursor: nwse-resize;
 }
 
-/* Dialog/Sheet */
+/* Dialog - Modal that opens when card is clicked */
 .dialog {
     position: fixed;
     top: 0;
@@ -99,11 +65,13 @@
     width: 100%;
     height: 100%;
     display: none;
-    z-index: 100;  /* well above cards */
+    z-index: 100;
 }
 
 .dialog[aria-hidden="false"] {
     display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .dialog-backdrop {
@@ -111,37 +79,397 @@
     inset: 0;
     background: rgba(0,0,0,0.3);
     backdrop-filter: blur(8px);
+    z-index: -1;
 }
 
-.dialog-content {
-    position: relative;
-    background: var(--bg);
-    border-radius: 16px;
-    padding: 24px;
-    margin: auto;
-    width: min(88vw, 1040px);
-    max-height: 86vh;
+/* Module Window - Modal styling */
+.module-window {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.module-window-header {
+    flex-shrink: 0;
+    margin-bottom: 24px;
+}
+
+.module-window-content {
+    flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
 }
 
-@media (max-width: 767px) {
-    .dialog-content {
-        width: 100%;
-        height: 100%;
-        border-radius: 0;
+.module-window-content > * {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.module-window-content .rp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Resume Card - Timeline Layout */
+.rp {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rp-header {
+    text-align: center;
+    margin-bottom: clamp(1.5rem, 5vw, 2rem);
+}
+
+.rp-title {
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    font-weight: 800;
+    margin: 0;
+    color: var(--fg);
+}
+
+.rp-menu {
+    display: none;
+}
+
+.rp-section {
+    display: none;
+    list-style: none;
+    margin: clamp(1.5rem, 4vw, 2rem) 0 0 0;
+    padding: 0 clamp(4rem, 15vw, 7rem);
+    width: 100%;
+}
+
+.rp-section.active {
+    display: block;
+}
+
+.rp-item {
+    display: flex;
+    gap: clamp(1.5rem, 3vw, 2rem);
+    align-items: center;
+    padding: clamp(2rem, 5vw, 3rem) 0;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.rp-item:nth-child(odd) {
+    flex-direction: row;
+    justify-content: flex-start;
+    padding-right: clamp(0rem, 5vw, 2.5rem);
+}
+
+.rp-item:nth-child(even) {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    padding-left: clamp(0rem, 5vw, 2.5rem);
+}
+
+.rp-item:nth-child(even) .rp-job {
+    text-align: right;
+}
+
+.rp-logo {
+    width: clamp(5rem, 10vw, 7rem);
+    height: clamp(5rem, 10vw, 7rem);
+    display: grid;
+    place-items: center;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    flex-shrink: 0;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    cursor: pointer;
+}
+
+.rp-logo-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(0.5rem, 1vw, 0.75rem);
+    flex-shrink: 0;
+}
+
+.rp-logo-section .rp-meta {
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+    text-align: center;
+    opacity: 1;
+}
+
+.rp-logo:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Neumorphic Action Button */
+.rp-action-btn {
+    appearance: none;
+    border: 1px solid var(--bg);
+    background: var(--bg);
+    width: clamp(3.5rem, 7vw, 4.5rem);
+    height: clamp(3.5rem, 7vw, 4.5rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: clamp(0.5rem, 1vw, 0.75rem);
+    color: var(--fg);
+    flex-shrink: 0;
+    pointer-events: auto;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15), -6px -6px 12px rgba(255, 255, 255, 0.8);
+    transform: rotate(var(--rotation, 0deg));
+}
+
+:root[data-theme="dark"] .rp-action-btn {
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.5), -6px -6px 12px rgba(255, 255, 255, 0.1);
+}
+
+/* Positioned button variant */
+.rp-action-btn.positioned {
+    position: absolute;
+    top: -clamp(1.5rem, 3vw, 2rem);
+    right: clamp(1rem, 5vw, 2rem);
+}
+
+.rp-item {
+    position: relative;
+}
+
+.rp-action-btn__logo {
+    width: 80%;
+    height: 80%;
+    fill: var(--fg);
+    transition: all 0.3s ease;
+}
+
+.rp-action-btn:hover .rp-action-btn__logo {
+    fill: rgb(var(--hero-key-glow));
+    filter: drop-shadow(0 0 8px rgb(var(--hero-key-glow))) drop-shadow(0 0 16px rgba(140, 180, 255, 0.6));
+}
+
+/* Microsoft logo - show as foreground color by default */
+.rp-logo.microsoft path {
+    fill: var(--fg) !important;
+    transition: fill 0.3s ease;
+}
+
+/* Microsoft logo - restore original colors on hover over the logo itself */
+.rp-logo.microsoft:hover path:nth-child(1) {
+    fill: #f35325 !important; /* red */
+}
+
+.rp-logo.microsoft:hover path:nth-child(2) {
+    fill: #81bc06 !important; /* green */
+}
+
+.rp-logo.microsoft:hover path:nth-child(3) {
+    fill: #05a6f0 !important; /* blue */
+}
+
+.rp-logo.microsoft:hover path:nth-child(4) {
+    fill: #ffba08 !important; /* yellow */
+}
+
+/* Generic text shimmer animation */
+@keyframes textShimmer {
+    0% {
+        background-position: 200% center;
+        transform: translateY(0) scaleX(1);
+        letter-spacing: 0;
+    }
+    50% {
+        background-position: -200% center;
+        transform: translateY(-3px) scaleX(1.02);
+        letter-spacing: 0.5px;
+    }
+    100% {
+        background-position: 200% center;
+        transform: translateY(0) scaleX(1);
+        letter-spacing: 0;
     }
 }
 
-.dialog-close {
-    position: absolute;
-    right: 16px;
-    top: 16px;
-    border: none;
-    background: none;
-    font-size: 24px;
-    cursor: pointer;
+/* Company name - default state */
+.company-name {
+    position: relative;
     color: var(--fg);
-    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+/* Microsoft text animation on logo hover */
+.rp-item:has(.rp-logo.microsoft:hover) .company-name.microsoft-name {
+    animation: textShimmer 4s ease-in-out infinite;
+    background: linear-gradient(90deg,
+        #f35325 0%,
+        #81bc06 25%,
+        #05a6f0 50%,
+        #ffba08 75%,
+        #f35325 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* SAP logo - first path (main shape) in foreground color by default */
+.rp-logo.sap path:first-of-type {
+    fill: var(--fg) !important;
+    transition: fill 0.3s ease;
+}
+
+/* SAP logo - text paths in background color by default */
+.rp-logo.sap path:nth-of-type(2),
+.rp-logo.sap path:nth-of-type(3) {
+    fill: var(--bg) !important;
+    transition: fill 0.3s ease;
+}
+
+/* SAP logo - restore original gradient on hover (only first path) */
+.rp-logo.sap:hover path:first-of-type {
+    fill: url(#b) !important;
+}
+
+/* SAP logo - text white on hover */
+.rp-logo.sap:hover path:nth-of-type(2),
+.rp-logo.sap:hover path:nth-of-type(3) {
+    fill: #fff !important;
+}
+
+.company-name.sap-name {
+    animation: textShimmer 4s ease-in-out infinite;
+}
+
+.rp-item:has(.rp-logo.sap:hover) .company-name.sap-name {
+    animation: textShimmer 4s ease-in-out infinite;
+    background: linear-gradient(90deg,
+        #00b8f1 0%,
+        #06a5e5 25%,
+        #1870c5 50%,
+        #1d61bc 75%,
+        #00b8f1 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Intact logo - show as foreground color by default */
+.rp-logo.intact polygon {
+    fill: var(--fg) !important;
+    transition: fill 0.3s ease;
+}
+
+.rp-logo.intact path {
+    fill: var(--fg) !important;
+    transition: fill 0.3s ease;
+}
+
+/* Intact logo - restore original colors on hover */
+.rp-logo.intact:hover polygon {
+    fill: #C60C30 !important; /* red */
+}
+
+/* Text paths - show foreground color on hover */
+.rp-logo.intact:hover path.st1,
+.rp-logo.intact:hover path.st2,
+.rp-logo.intact:hover path.st3,
+.rp-logo.intact:hover path.st4,
+.rp-logo.intact:hover path.st5 {
+    fill: var(--fg) !important;
+}
+
+.company-name.intact-name {
+    animation: textShimmer 4s ease-in-out infinite;
+}
+
+.rp-item:has(.rp-logo.intact:hover) .company-name.intact-name {
+    animation: textShimmer 4s ease-in-out infinite;
+    background: linear-gradient(90deg,
+        #051922 0%,
+        #e3173e 33%,
+        #00aebd 66%,
+        #051922 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Tagline - Desktop only */
+.rp-tagline {
+    display: none;
+}
+
+@media (min-width: 769px) {
+    .rp-tagline {
+        display: block;
+        font-size: clamp(0.85rem, 1.5vw, 1rem);
+        font-style: italic;
+        color: var(--fg);
+        opacity: 0.75;
+        line-height: 1.4;
+        max-width: var(--max-width, clamp(120px, 15vw, 200px));
+        transform: rotate(var(--rotation, 0deg));
+        flex-shrink: 0;
+    }
+
+
+}
+
+.rp-job {
+    text-align: left;
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.rp-role {
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+    font-weight: 700;
+    color: var(--fg);
+    margin: 0 0 0.375rem 0;
+}
+
+.rp-meta {
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+    color: var(--fg);
+    opacity: 0.7;
+    margin: 0.125rem 0;
+}
+
+@media (max-width: 768px) {
+    .rp-item {
+        flex-direction: row !important;
+        justify-content: center !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .rp-item:nth-child(even) {
+        flex-direction: row !important;
+    }
+
+    .rp-item:nth-child(even) .rp-job {
+        text-align: left;
+    }
+
+    .rp-job {
+        text-align: left;
+    }
+
+    .rp-action-btn {
+        display: none;
+    }
 }
 
 /* Theme Toggle */
@@ -161,29 +489,3 @@
 .theme-toggle:hover {
     opacity: 1;
 }
-
-/* Make the modal content scroll within itself */
-.module-window {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;        /* prevent window from spilling out */
-}
-
-.module-window-content {
-  flex: 1;                 /* take up remaining space below header */
-  overflow-y: auto;        /* scroll internally */
-  padding: 1rem;           /* add breathing space */
-}
-
-/* Optional: smoother scroll */
-.module-window-content::-webkit-scrollbar {
-  width: 8px;
-}
-.module-window-content::-webkit-scrollbar-thumb {
-  background: rgba(100,100,100,0.3);
-  border-radius: 4px;
-}
-
-.module-card { z-index: 1; }               /* all cards same base layer */
-.module-card.dragging,
-.module-card.resizing { z-index: 1000; }    /* only the active card is on top */
