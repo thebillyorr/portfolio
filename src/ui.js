@@ -5,8 +5,21 @@ export const STORAGE_KEYS = {
 };
 
 export function initializeTheme() {
-  const savedTheme = localStorage.getItem(STORAGE_KEYS.theme) || 'light';
+  let savedTheme = localStorage.getItem(STORAGE_KEYS.theme);
+  
+  // Default to light mode if no preference saved
+  if (!savedTheme) {
+    savedTheme = 'light';
+    localStorage.setItem(STORAGE_KEYS.theme, 'light');
+  }
+  
   document.documentElement.setAttribute('data-theme', savedTheme);
+  
+  // Sync checkbox state with theme (checked = light/day with sun, unchecked = dark/night with moon)
+  const checkbox = document.querySelector('#checkbox');
+  if (checkbox) {
+    checkbox.checked = savedTheme === 'light';
+  }
 }
 export function toggleTheme() {
   const el = document.documentElement;
@@ -40,10 +53,6 @@ export function createModule(opts = {}) {
   card.setAttribute('data-id', opts.id || `m-${Date.now()}`);
   card.setAttribute('role', 'button');
 
-  const header = document.createElement('div');
-  header.className = 'card-header';
-  header.textContent = opts.title || 'Module';
-
   const body = document.createElement('div');
   body.className = 'card-body';
   body.textContent = opts.proof || '';
@@ -52,7 +61,6 @@ export function createModule(opts = {}) {
   resize.className = 'resizable-handle';
   resize.setAttribute('aria-hidden', 'true');
 
-  card.appendChild(header);
   card.appendChild(body);
   card.appendChild(resize);
 
@@ -78,30 +86,15 @@ export function openModuleWindow(card) {
   // prevent duplicates
   if (document.querySelector(`.module-window[data-source="${card.getAttribute('data-id')}"]`)) return;
 
-  const titleText = card.querySelector('.card-header')?.textContent || 'Module';
-
-  // === Backdrop ===
-  const backdrop = document.createElement('div');
-  backdrop.className = 'module-backdrop';
-  const themeNow = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-  const backdropBg = themeNow === 'dark' ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.3)';
-  Object.assign(backdrop.style, {
-    position: 'fixed',
-    inset: '0',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 9998,
-    background: backdropBg,
-    backdropFilter: 'blur(10px)',
-    WebkitBackdropFilter: 'blur(10px)',
-  });
-
   // === Window ===
   const win = document.createElement('div');
   win.className = 'module-window';
   win.setAttribute('data-source', card.getAttribute('data-id'));
   Object.assign(win.style, {
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
     background: 'var(--bg)',
     borderRadius: '14px',
     padding: '18px',
@@ -119,12 +112,8 @@ export function openModuleWindow(card) {
   const header = document.createElement('div');
   header.className = 'module-window-header';
   header.style.display = 'flex';
-  header.style.justifyContent = 'space-between';
+  header.style.justifyContent = 'flex-end';
   header.style.alignItems = 'center';
-
-  const hTitle = document.createElement('div');
-  hTitle.textContent = titleText;
-  hTitle.style.fontWeight = '600';
 
   const closeBtn = document.createElement('button');
   closeBtn.type = 'button';
@@ -135,7 +124,6 @@ export function openModuleWindow(card) {
   closeBtn.style.cursor = 'pointer';
   closeBtn.style.color = 'var(--fg)';
 
-  header.appendChild(hTitle);
   header.appendChild(closeBtn);
   win.appendChild(header);
 
@@ -146,18 +134,12 @@ export function openModuleWindow(card) {
 
   import('./content.js').then(({ CARD_CONTENT }) => {
     body.innerHTML = CARD_CONTENT[id]?.modal || '<p>No content yet.</p>';
-
-    // If the resume tabs exist, wire them up (safe to call always)
-    if (typeof initResumeTabs === 'function') {
-      initResumeTabs(body);
-    }
   });
 
   win.appendChild(body);
 
   // === Mount ===
-  backdrop.appendChild(win);
-  document.body.appendChild(backdrop);
+  document.body.appendChild(win);
 
   // Lock background scroll
   document.body.classList.add('modal-open');
@@ -168,67 +150,20 @@ export function openModuleWindow(card) {
   function onKey(e) {
     if (e.key === 'Escape') closeWindow();
   }
-  function onBackdropClick(e) {
-    if (e.target === backdrop) closeWindow();
-  }
   function closeWindow() {
     window.removeEventListener('keydown', onKey);
-    backdrop.removeEventListener('click', onBackdropClick);
-    backdrop.remove();
+    win.remove();
     document.body.classList.remove('modal-open'); // re-enable page scroll
   }
 
   window.addEventListener('keydown', onKey);
-  backdrop.addEventListener('click', onBackdropClick);
   closeBtn.addEventListener('click', closeWindow);
 }
 
 
 
-// Overlap (visual) helpers used during drag
-export function rectsOverlapPx(aEl, bEl) {
-  const a = aEl.getBoundingClientRect();
-  const b = bEl.getBoundingClientRect();
-  return !(a.right <= b.left || a.left >= b.right || a.bottom <= b.top || a.top >= b.bottom);
-}
 
-let _overlapRAF = null;
-export function updateOverlapsForActive(activeEl) {
-  if (_overlapRAF) return;
-  _overlapRAF = requestAnimationFrame(() => {
-    _overlapRAF = null;
-    const cards = document.querySelectorAll('.module-card');
-    cards.forEach(c => {
-      if (c === activeEl) { c.classList.remove('overlapped'); return; }
-      if (rectsOverlapPx(activeEl, c)) c.classList.add('overlapped');
-      else c.classList.remove('overlapped');
-    });
-  });
-}
-export function clearAllOverlaps() {
-  document.querySelectorAll('.module-card.overlapped')
-    .forEach(c => c.classList.remove('overlapped'));
-}
 
-// ui.js (add this helper)
-export function initResumeTabs(rootEl) {
-  const menu = rootEl.querySelector('.rp-menu');
-  if (!menu) return;
 
-  menu.addEventListener('click', (e) => {
-    const btn = e.target.closest('button[data-target]');
-    if (!btn) return;
 
-    // toggle active button
-    menu.querySelectorAll('button').forEach(b => {
-      b.classList.toggle('active', b === btn);
-      b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
-    });
 
-    // toggle sections
-    const target = btn.dataset.target;
-    const sections = rootEl.querySelectorAll('.rp-section');
-    sections.forEach(sec => sec.classList.remove('active'));
-    rootEl.querySelector(`#rp-${target}`)?.classList.add('active');
-  });
-}

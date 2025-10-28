@@ -18,11 +18,6 @@
     margin: 0 0 16px;
     animation: fadeInUp 0.8s ease-out;
 }
-.hero-hello {
-    font-size: 1.4em;
-    font-weight: 700;
-    margin-right: 8px;
-}
 .hero-title span { color: rgb(var(--hero-key-glow)); filter: saturate(120%); }
 .hero-name {
     font-weight: 700;
@@ -146,15 +141,6 @@
     }
 }
 
-@keyframes floatBob {
-    0%, 100% {
-        transform: translateY(-50%) rotate(-8deg);
-    }
-    50% {
-        transform: translateY(-60%) rotate(-8deg);
-    }
-}
-
 /* Responsive - hide on small screens */
 @media (max-width: 768px) {
     .hero-notecard {
@@ -181,36 +167,44 @@
     border: 0 !important;
 }
 
-/* Square neumorphic social buttons (icon-only) */
+/* Square neumorphic social buttons (icon-only) - using rp-action-btn styling */
 .social-btn {
-    /* Button styling (adapted from provided snippet) */
-    display: inline-grid;
-    place-items: center;
-    width: 52px;
-    height: 52px; /* make perfectly square as requested */
-    border-radius: 0.5em;
-    padding: 0; /* icon-only */
-    color: var(--fg);
-    font-size: 18px;
+    appearance: none;
+    border: 1px solid var(--bg);
     background: var(--bg);
+    width: clamp(2.75rem, 5.5vw, 3.5rem);
+    height: clamp(2.75rem, 5.5vw, 3.5rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: clamp(0.5rem, 1vw, 0.75rem);
+    color: var(--fg);
+    flex-shrink: 0;
+    pointer-events: auto;
     cursor: pointer;
     transition: all 0.3s;
-    border: none;
-    box-shadow: 
-        0 8px 16px rgba(0, 0, 0, 0.1),
-        0 -4px 8px rgba(255, 255, 255, 0.7),
-        inset 0 1px 1px rgba(255, 255, 255, 0.3);
-    filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.08)) drop-shadow(-10px -10px 20px rgba(255, 255, 255, 0.5));
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15), -6px -6px 12px rgba(255, 255, 255, 0.8);
 }
 
-.social-btn svg { width: 20px; height: 20px; display: block; }
+:root[data-theme="dark"] .social-btn {
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.5), -6px -6px 12px rgba(255, 255, 255, 0.1);
+}
+
+.social-btn svg { 
+    width: 60%; 
+    height: 60%; 
+    display: block;
+    fill: var(--fg);
+    transition: all 0.3s ease;
+}
+
+.social-btn:hover svg {
+    fill: rgb(var(--hero-key-glow));
+    filter: drop-shadow(0 0 8px rgb(var(--hero-key-glow))) drop-shadow(0 0 16px rgba(140, 180, 255, 0.6));
+}
 
 .social-btn:active {
-    color: var(--fg);
-    box-shadow: 
-        inset 0 4px 8px rgba(0, 0, 0, 0.15),
-        inset 0 -2px 4px rgba(255, 255, 255, 0.3);
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    transform: scale(0.98);
 }
 
 /* Dark theme variant - same rules, colors adjusted only */
@@ -264,9 +258,13 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(4px);
     animation: fadeIn 0.3s ease;
+}
+
+:root[data-theme="dark"] .gallery-modal-backdrop {
+    background: rgba(0, 0, 0, 0.4);
 }
 
 .gallery-modal-content {
@@ -407,16 +405,6 @@
         opacity: 1;
         transform: translateY(0px) translateX(40px) rotate(8deg);
     }
-}
-
-@keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
-}
-
-@keyframes blink-caret {
-    from, to { border-color: transparent }
-    50% { border-color: rgb(var(--hero-key-glow)); }
 }
 
 

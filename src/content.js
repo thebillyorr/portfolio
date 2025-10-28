@@ -1,9 +1,47 @@
 // content.js
 export const CARD_CONTENT = {
   resume: {
-    face: `
-      <div class="resume-mini">
-        <div class="resume-mini__title">Resume</div>
+    small: `
+      <div class="card-display-small">
+        <div>
+          <span class="card-emoji">📄</span>
+          <span class="card-label-small">Resume</span>
+        </div>
+      </div>
+    `,
+    medium: `
+      <div class="card-display-medium">
+        <div class="medium-left">
+          <span class="card-emoji">📄</span>
+          <span class="card-label">Resume</span>
+        </div>
+        <div class="medium-right">
+          <span class="card-cta">Click to view my experiences</span>
+        </div>
+      </div>
+    `,
+    large: `
+      <div class="card-display-large">
+        <div class="large-top">
+          <span class="card-emoji">📄</span>
+          <h3 class="card-title">Resume</h3>
+        </div>
+        <div class="large-bottom">
+          <div class="company-grid">
+            <div class="company-logo">
+              <img src="logos/microsoft.svg" alt="Microsoft" />
+            </div>
+            <div class="company-logo">
+              <img src="logos/sap.svg" alt="SAP" />
+            </div>
+            <div class="company-logo">
+              <img src="logos/intact.svg" alt="Intact" />
+            </div>
+            <div class="company-logo">
+              <img src="logos/blackberry.svg" alt="BlackBerry" />
+            </div>
+          </div>
+        </div>
       </div>
     `,
     modal: `
@@ -22,8 +60,7 @@ export const CARD_CONTENT = {
               <div class="rp-role">Security Program Manager Intern @ <span class="company-name microsoft-name">Microsoft</span></div>
               <div class="rp-meta">May 2025 – Aug 2025</div>
             </div>
-            <div class="rp-tagline" style="--rotation: 2deg; --max-width: 200px;">AI. ML. RAG. MCP. LLMs. Did it all. </div>
-            <button class="rp-action-btn" style="--rotation: -3deg;" title="View details"><svg class="rp-action-btn__logo" xmlns="http://www.w3.org/2000/svg" viewBox="-47.36265 -79.99825 410.4763 479.9895"><path d="M294.93 130.971a79.712 79.712 0 00-6.85-65.48c-17.46-30.4-52.56-46.04-86.84-38.68A79.747 79.747 0 00141.11.001c-35.04-.08-66.13 22.48-76.91 55.82a79.754 79.754 0 00-53.31 38.67c-17.59 30.32-13.58 68.54 9.92 94.54a79.712 79.712 0 006.85 65.48c17.46 30.4 52.56 46.04 86.84 38.68a79.687 79.687 0 0060.13 26.8c35.06.09 66.16-22.49 76.94-55.86a79.754 79.754 0 0053.31-38.67c17.57-30.32 13.55-68.51-9.94-94.51zm-120.28 168.11a59.77 59.77 0 01-38.39-13.88c.49-.26 1.34-.73 1.89-1.07l63.72-36.8a10.36 10.36 0 005.24-9.07v-89.83l26.93 15.55c.29.14.48.42.52.74v74.39c-.04 33.08-26.83 59.9-59.91 59.97zm-128.84-55.03a59.71 59.71 0 01-7.15-40.18c.47.28 1.3.79 1.89 1.13l63.72 36.8c3.23 1.89 7.23 1.89 10.47 0l77.79-44.92v31.1c.02.32-.13.63-.38.83l-64.41 37.19c-28.69 16.52-65.33 6.7-81.92-21.95zm-16.77-139.09c7-12.16 18.05-21.46 31.21-26.29 0 .55-.03 1.52-.03 2.2v73.61c-.02 3.74 1.98 7.21 5.23 9.06l77.79 44.91-26.93 15.55c-.27.18-.61.21-.91.08l-64.42-37.22c-28.63-16.58-38.45-53.21-21.95-81.89zm221.26 51.49l-77.79-44.92 26.93-15.54c.27-.18.61-.21.91-.08l64.42 37.19c28.68 16.57 38.51 53.26 21.94 81.94a59.94 59.94 0 01-31.2 26.28v-75.81c.03-3.74-1.96-7.2-5.2-9.06zm26.8-40.34c-.47-.29-1.3-.79-1.89-1.13l-63.72-36.8a10.375 10.375 0 00-10.47 0l-77.79 44.92v-31.1c-.02-.32.13-.63.38-.83l64.41-37.16c28.69-16.55 65.37-6.7 81.91 22a59.95 59.95 0 017.15 40.1zm-168.51 55.43l-26.94-15.55a.943.943 0 01-.52-.74v-74.39c.02-33.12 26.89-59.96 60.01-59.94 14.01 0 27.57 4.92 38.34 13.88-.49.26-1.33.73-1.89 1.07l-63.72 36.8a10.344 10.344 0 00-5.24 9.06l-.04 89.79zm14.63-31.54l34.65-20.01 34.65 20v40.01l-34.65 20-34.65-20z"/></svg></button>
+            <div class="rp-tagline" style="--rotation: 2deg; --max-width: 200px;">"AI. ML. RAG. MCP. LLMs. Did it all."</div>
           </li>
 
           <li class="rp-item">
@@ -35,8 +72,7 @@ export const CARD_CONTENT = {
               <div class="rp-role">Security Engineer Intern @ <span class="company-name sap-name">SAP</span></div>
               <div class="rp-meta">Sep 2024 – Apr 2025</div>
             </div>
-            <div class="rp-tagline" style="--rotation: -2.5deg; --max-width: 400px;">Physical Security. 100+ offices worldwide. Yes we were busy. </div>
-            <button class="rp-action-btn" style="--rotation: 2.8deg;" title="View details"><svg class="rp-action-btn__logo" xmlns="http://www.w3.org/2000/svg" viewBox="-47.36265 -79.99825 410.4763 479.9895"><path d="M294.93 130.971a79.712 79.712 0 00-6.85-65.48c-17.46-30.4-52.56-46.04-86.84-38.68A79.747 79.747 0 00141.11.001c-35.04-.08-66.13 22.48-76.91 55.82a79.754 79.754 0 00-53.31 38.67c-17.59 30.32-13.58 68.54 9.92 94.54a79.712 79.712 0 006.85 65.48c17.46 30.4 52.56 46.04 86.84 38.68a79.687 79.687 0 0060.13 26.8c35.06.09 66.16-22.49 76.94-55.86a79.754 79.754 0 0053.31-38.67c17.57-30.32 13.55-68.51-9.94-94.51zm-120.28 168.11a59.77 59.77 0 01-38.39-13.88c.49-.26 1.34-.73 1.89-1.07l63.72-36.8a10.36 10.36 0 005.24-9.07v-89.83l26.93 15.55c.29.14.48.42.52.74v74.39c-.04 33.08-26.83 59.9-59.91 59.97zm-128.84-55.03a59.71 59.71 0 01-7.15-40.18c.47.28 1.3.79 1.89 1.13l63.72 36.8c3.23 1.89 7.23 1.89 10.47 0l77.79-44.92v31.1c.02.32-.13.63-.38.83l-64.41 37.19c-28.69 16.52-65.33 6.7-81.92-21.95zm-16.77-139.09c7-12.16 18.05-21.46 31.21-26.29 0 .55-.03 1.52-.03 2.2v73.61c-.02 3.74 1.98 7.21 5.23 9.06l77.79 44.91-26.93 15.55c-.27.18-.61.21-.91.08l-64.42-37.22c-28.63-16.58-38.45-53.21-21.95-81.89zm221.26 51.49l-77.79-44.92 26.93-15.54c.27-.18.61-.21.91-.08l64.42 37.19c28.68 16.57 38.51 53.26 21.94 81.94a59.94 59.94 0 01-31.2 26.28v-75.81c.03-3.74-1.96-7.2-5.2-9.06zm26.8-40.34c-.47-.29-1.3-.79-1.89-1.13l-63.72-36.8a10.375 10.375 0 00-10.47 0l-77.79 44.92v-31.1c-.02-.32.13-.63.38-.83l64.41-37.16c28.69-16.55 65.37-6.7 81.91 22a59.95 59.95 0 017.15 40.1zm-168.51 55.43l-26.94-15.55a.943.943 0 01-.52-.74v-74.39c.02-33.12 26.89-59.96 60.01-59.94 14.01 0 27.57 4.92 38.34 13.88-.49.26-1.33.73-1.89 1.07l-63.72 36.8a10.344 10.344 0 00-5.24 9.06l-.04 89.79zm14.63-31.54l34.65-20.01 34.65 20v40.01l-34.65 20-34.65-20z"/></svg></button>
+            <div class="rp-tagline" style="--rotation: -2.5deg; --max-width: 400px;">"Physical Security. 100+ offices worldwide. Yes we were busy."</div>
           </li>
 
           <li class="rp-item">
@@ -108,67 +144,92 @@ export const CARD_CONTENT = {
               <div class="rp-role">Security Engineer Intern @ <span class="company-name intact-name">Intact Financial</span></div>
               <div class="rp-meta">May 2024 – Aug 2024</div>
             </div>
-            <div class="rp-tagline" style="--rotation: 2deg; --max-width: 300px;">GRC is NOT boring!</div>
+            <div class="rp-tagline" style="--rotation: 2deg; --max-width: 300px;">"GRC is NOT boring!"</div>
           </li>
 
           <li class="rp-item">
             <div class="rp-logo-section">
-              <img class="rp-logo" src="logos/blackberry-black.png" alt="BlackBerry" loading="lazy">
+              <svg class="rp-logo blackberry" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="26.986015" width="38.875896" viewBox="0 0 38.875896 26.986015">
+                <defs>
+                  <linearGradient id="blackberryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#1172db"/>
+                    <stop offset="100%" stop-color="#01033e"/>
+                  </linearGradient>
+                </defs>
+                <g clip-path="url(#clipPath3355)" transform="translate(-4.1840024,-9.0407543)">
+                  <path d="m 16.451,11.896 c 0,-1.264 -0.774,-2.864 -4.027,-2.864 -1.335,0 -5.009,0 -5.009,0 L 5.991,15.62 c 0,0 2.707,0 5.222,0 4.077,0 5.238,-1.93 5.238,-3.724 z"/>
+                  <path d="m 29.944,11.896 c 0,-1.264 -0.772,-2.864 -4.024,-2.864 -1.336,0 -5.01,0 -5.01,0 l -1.423,6.587 c 0,0 2.706,0 5.219,0 4.079,10e-4 5.238,-1.929 5.238,-3.723 z"/>
+                  <path d="m 14.644,21.811 c 0,-1.264 -0.774,-2.868 -4.027,-2.868 -1.335,0 -5.009,0 -5.009,0 l -1.424,6.592 c 0,0 2.707,0 5.22,0 4.078,0 5.24,-1.935 5.24,-3.724 z"/>
+                  <path d="m 28.137,21.811 c 0,-1.264 -0.775,-2.868 -4.025,-2.868 -1.337,0 -5.009,0 -5.009,0 l -1.426,6.592 c 0,0 2.707,0 5.222,0 4.079,0 5.238,-1.935 5.238,-3.724 z"/>
+                  <path d="m 42.254,17.79 c 0,-1.265 -0.775,-2.868 -4.025,-2.868 -1.337,0 -5.009,0 -5.009,0 l -1.426,6.591 c 0,0 2.709,0 5.22,0 4.079,0 5.24,-1.93 5.24,-3.723 z"/>
+                  <path d="m 40.308,28.113 c 0,-1.265 -0.773,-2.864 -4.025,-2.864 -1.335,0 -5.009,0 -5.009,0 l -1.424,6.588 c 0,0 2.705,0 5.22,0 4.078,0 5.238,-1.935 5.238,-3.724 z"/>
+                  <path d="m 26.198,32.135 c 0,-1.27 -0.772,-2.873 -4.022,-2.873 -1.338,0 -5.012,0 -5.012,0 l -1.424,6.591 c 0,0 2.707,0 5.22,0 4.079,10e-4 5.238,-1.929 5.238,-3.718 z"/>
+                </g>
+              </svg>
               <div class="rp-meta">📍 Waterloo, CAN</div>
             </div>
             <div class="rp-job">
-              <div class="rp-role">Security Engineer Intern @ BlackBerry</div>
+              <div class="rp-role">Security Engineer Intern @ <span class="company-name blackberry-name">BlackBerry</span></div>
               <div class="rp-meta">Jan 2024 – Apr 2024</div>
             </div>
-            <div class="rp-tagline" style="--rotation: -1.8deg; --max-width: 300px;">Security architecture but not for the phones. </div>
+            <div class="rp-tagline" style="--rotation: -1.8deg; --max-width: 300px;">"Security architecture but not for the phones."</div>
           </li>
 
           <li class="rp-item">
             <div class="rp-logo-section">
-              <img class="rp-logo" src="logos/cyberunit-black.png" alt="Cyber Unit" loading="lazy">
+              <img class="rp-logo cyberunit" src="logos/cyberunit.png" alt="Cyber Unit" />
               <div class="rp-meta">📍 Vancouver, CAN</div>
             </div>
             <div class="rp-job">
-              <div class="rp-role">Security Engineer Intern @ Cyber Unit</div>
+              <div class="rp-role">Security Engineer Intern @ <span class="company-name cyberunit-name">Cyber Unit</span></div>
               <div class="rp-meta">Oct 2021 – Aug 2022</div>
             </div>
-            <div class="rp-tagline" style="--rotation: 2.2deg; --max-width: 300px;">My first ever exposure to the world of cybersecurity.</div>
+            <div class="rp-tagline" style="--rotation: 2.2deg; --max-width: 300px;">"My first ever exposure to the world of cybersecurity."</div>
           </li>
 
           <li class="rp-item">
             <div class="rp-logo-section">
-              <img class="rp-logo" src="logos/ubc-black.png" alt="UBC" loading="lazy">
-              <div class="rp-meta">📍 Vancouver, CAN</div>
+              <svg class="rp-logo ubc" xmlns="http://www.w3.org/2000/svg" width="2500" height="2500" viewBox="0 0 192.756 192.756">
+                <g fill-rule="evenodd" clip-rule="evenodd">
+                  <path fill="#fff" fill-opacity="0" d="M0 0h192.756v192.756H0V0z"/>
+                  <path d="M145.656 26.548l-1.326 4.861h-.441c-1.326-1.326-2.693-2.544-3.977-3.094-1.818-.777-3.094-1.326-4.863-1.326-3.535 0-6.188 1.326-8.838 4.419-2.652 3.094-3.979 6.63-3.979 10.607s1.189 7.176 3.535 10.165c2.518 3.203 5.746 4.861 9.281 4.861 1.77 0 3.045-.548 4.863-1.326 1.283-.55 2.65-1.326 4.418-2.21h.885l-.885 4.42c-1.768.884-3.549 1.106-5.303 1.326-1.809.225-3.535.442-5.746.442-4.861 0-8.852-.868-12.375-3.094-4.871-3.076-7.07-7.955-7.07-14.584 0-5.304 2.1-9.853 6.188-13.259 3.869-3.226 8.838-4.862 14.584-4.862 1.768 0 3.535 0 5.305.442 1.768.444 3.535 1.329 5.744 2.212zM78.921 46.878c0 3.534-1.224 6.739-3.978 9.281-2.993 2.763-6.629 3.978-11.049 3.978-3.978 0-7.514-.884-11.049-2.651-3.536-1.768-5.304-3.978-5.304-7.072V24.338h7.955v23.424c0 2.65.755 4.526 2.21 6.188 1.646 1.881 3.536 2.652 6.188 2.652h.884c2.21 0 4.595-.628 6.629-2.209 1.973-1.535 3.094-3.536 3.094-5.746V24.338h4.42v22.54zM47.542 75.164c7.071 0 7.955-3.535 16.353-3.535s9.723 3.535 16.353 3.535c7.071 0 7.955-3.535 16.353-3.535 8.397 0 9.723 3.535 16.352 3.535 6.631 0 7.955-3.535 16.354-3.535 8.396 0 9.281 3.535 16.352 3.535v-7.955c-7.07 0-7.955-3.535-16.352-3.535-8.398 0-9.723 3.535-16.354 3.535-6.629 0-7.955-3.535-16.352-3.535s-9.281 3.535-16.353 3.535c-6.629 0-7.955-3.535-16.353-3.535s-9.281 3.535-16.353 3.535v7.955z" fill="#22276c"/>
+                  <path d="M96.599 165.766c30.938-9.723 38.45-26.959 48.616-48.615l-22.541 16.354 12.818-28.729-20.773 22.982 9.725-35.357-16.354 29.17 4.42-36.683-12.375 32.705-3.536-41.103-3.978 41.102-12.374-32.705 4.861 36.683L68.313 92.4l10.165 35.357-21.214-22.982 12.817 28.729-22.098-16.354c10.165 21.657 17.237 38.893 48.616 48.616z" fill="#d2b22c"/>
+                  <path d="M47.542 101.24c7.071 0 7.955-3.094 16.353-3.094h3.978l-2.21-7.956h-1.768c-8.397 0-9.281 3.535-16.353 3.094v7.956zm27.843-.885c1.326.441 3.094.885 4.862.885h.442l-1.326-7.956c-3.978 0-6.188-1.326-9.723-2.652l5.745 9.723zm12.817-.882c1.326-.443 2.652-.885 4.42-1.326l.442-7.956c-3.094.884-5.304 1.768-7.513 2.651l2.651 6.631zm12.374-1.327c1.77.441 3.094.883 4.42 1.326l2.652-7.072c-2.652-.442-4.42-1.768-7.955-2.209l.883 7.955zm11.934 3.094h.441c1.768 0 3.537 0 4.861-.443l5.305-9.722c-3.535.884-5.305 2.21-9.723 2.21l-.884 7.955zm12.375-3.094h4.42c8.396 0 9.281 3.094 16.352 3.094v-7.956c-7.07 0-7.955-3.094-16.352-3.094h-1.768l-2.652 7.956zM47.542 87.981c7.071 0 7.955-3.094 16.353-3.094 7.955 0 9.281 2.651 15.027 3.094l-.884-7.955c-4.861-.442-6.629-3.094-14.143-3.094-8.397 0-9.281 3.535-16.353 3.535v7.514zm36.24 0c3.536-.884 5.304-2.652 9.723-3.094l.884-7.955c-6.188.884-7.955 3.094-13.259 3.535l2.652 7.514zm15.47-3.094c4.861.442 6.629 2.21 10.164 3.094l2.652-7.514c-5.305-.441-7.072-3.094-13.701-3.535l.885 7.955zm15.025 3.094c5.746 0 7.072-3.094 15.027-3.094 8.396 0 9.281 3.094 16.352 3.094v-7.955c-7.07 0-7.955-3.094-16.352-3.094-7.514 0-9.281 2.651-14.143 3.094l-.884 7.955z" fill="#22276c"/>
+                  <path d="M96.599 178.582c11.932-3.535 24.307-8.396 34.473-16.793 7.07-5.746 13.258-12.818 17.236-20.773 6.188-11.49 8.396-23.865 8.396-37.125V14.173H36.05v89.717c.442 13.26 2.21 25.635 8.397 37.125 3.978 7.955 10.165 15.027 17.236 20.773 10.166 8.398 22.541 13.259 34.916 16.794zM38.703 16.825v87.065c0 36.242 20.33 61.875 57.896 72.041 37.125-10.166 57.897-35.799 57.897-72.041V16.825H38.703z" fill="#22276c"/>
+                  <path d="M95.715 42.459h-4.42v14.143h3.978c4.031 0 6.629-2.777 6.629-7.071 0-3.476-2.955-7.072-6.187-7.072zm.884 16.794H83.782V24.78h16.794c2.652 0 5.305.884 7.072 2.21 1.768 1.768 3.094 3.536 3.094 5.746 0 1.768-1.326 3.536-3.094 4.861-2.209 1.768-4.42 2.652-7.072 3.094v.442c3.094 0 5.746.442 7.955 2.209 1.77 1.326 3.094 3.094 3.094 5.746s-1.324 5.304-3.535 7.071c-2.209 2.21-5.303 3.094-8.838 3.094h-2.653zm-2.21-31.821h-3.094v12.375h3.978c3.291 0 6.188-2.809 6.188-6.629 0-3.822-3.955-5.746-7.072-5.746z" fill="#22276c"/>
+                </g>
+              </svg>
+              <div class="rp-meta">📍 University of British Columbia</div>
             </div>
             <div class="rp-job">
-              <div class="rp-role">Cybersecurity Teaching Assistant @ UBC</div>
+              <div class="rp-role">Cybersecurity Teaching Assistant @ <span class="company-name ubc-name">UBC</span></div>
               <div class="rp-meta">Oct 2023 – Jan 2025</div>
             </div>
-            <div class="rp-tagline" style="--rotation: -1.2deg; --max-width: 300px;">Taught some classes. Taught some labs. Graded A LOT of papers.</div>
+            <div class="rp-tagline" style="--rotation: -1.2deg; --max-width: 300px;">"Taught some classes. Taught some labs. Graded A LOT of papers."</div>
           </li>
 
           <li class="rp-item">
             <div class="rp-logo-section">
-              <img class="rp-logo" src="logos/securityplus-black.png" alt="CompTIA Security+" loading="lazy">
-              <div class="rp-meta">CompTIA Certification</div>
+              <img class="rp-logo security-plus" src="logos/securityplus-black.png" alt="CompTIA Security+" loading="lazy">
+              <div class="rp-meta">CompTIA Security+</div>
             </div>
             <div class="rp-job">
               <div class="rp-role">Security+</div>
               <div class="rp-meta">Earned 2024</div>
             </div>
-            <div class="rp-tagline" style="--rotation: 1.8deg; --max-width: 400px;">The tip of the iceberg for security certifications.</div>
+            <div class="rp-tagline" style="--rotation: 1.8deg; --max-width: 400px;">"The tip of the iceberg for security certifications."</div>
           </li>
 
           <li class="rp-item">
             <div class="rp-logo-section">
-              <img class="rp-logo" src="logos/cc-black.png" alt="ISC2 CC" loading="lazy">
-              <div class="rp-meta">ISC2 Certification</div>
+              <img class="rp-logo cc" src="logos/cc-black.png" alt="ISC2 CC" loading="lazy">
+              <div class="rp-meta">ISC2 Certified in Cybersecurity</div>
             </div>
             <div class="rp-job">
               <div class="rp-role">Certified in Cybersecurity (CC)</div>
               <div class="rp-meta">Earned 2023</div>
             </div>
-            <div class="rp-tagline" style="--rotation: -2.1deg; --max-width: 400px;">Everyone needs to start somewhere ... </div>
+            <div class="rp-tagline" style="--rotation: -2.1deg; --max-width: 400px;">"Everyone needs to start somewhere ... "</div>
           </li>
         </ul>
       </div>

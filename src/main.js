@@ -11,8 +11,7 @@ import {
 
 import {
   initializeTheme, toggleTheme,
-  createModule, getSavedLayout, persistLayout,
-  updateOverlapsForActive, clearAllOverlaps
+  createModule, getSavedLayout, persistLayout
 } from './ui.js';
 
 import { CARD_CONTENT } from './content.js';
@@ -42,9 +41,14 @@ function applyPreset(card, key) {
 function mountModule({ id, title, proof = 'click to expand', preset = 'S', leftCells = 1, topCells = 1 }) {
   const card = createModule({ id, title, proof });
 
-  // Fill face content
-  if (CARD_CONTENT[id]?.face) {
-    card.querySelector('.card-body').innerHTML = CARD_CONTENT[id].face;
+  // Fill face content with all size variants
+  if (CARD_CONTENT[id]) {
+    const body = card.querySelector('.card-body');
+    body.innerHTML = `
+      <div data-size="small">${CARD_CONTENT[id].small || ''}</div>
+      <div data-size="medium">${CARD_CONTENT[id].medium || ''}</div>
+      <div data-size="large">${CARD_CONTENT[id].large || ''}</div>
+    `;
   }
 
   // Restore or place + preset
@@ -119,15 +123,11 @@ function attachDrag(card) {
 
     card.style.left = `${newLeft}px`;
     card.style.top  = `${newTop}px`;
-
-    // optional visual feedback for overlaps
-    updateOverlapsForActive(card);
   });
 
   card.addEventListener('pointerup', (e) => {
     if (!dragging) return;
     dragging = false;
-    clearAllOverlaps();
 
     const bounds = getBounds();
     const w = card.offsetWidth;
@@ -160,7 +160,6 @@ function attachDrag(card) {
   card.addEventListener('pointercancel', () => {
     if (!dragging) return;
     dragging = false;
-    clearAllOverlaps();
     card.classList.remove('dragging');
     card._dragMoved = false;
   });
@@ -193,6 +192,12 @@ function attachResize(card, handle) {
     const newH = Math.max(MIN_H, Math.min(startH + dY, MAX_H));
     card.style.width = newW + 'px';
     card.style.height = newH + 'px';
+    
+    // Update preset in real-time for smooth content transitions
+    const currentPreset = nearestPreset(newW, newH);
+    if (card.dataset.preset !== currentPreset) {
+      card.dataset.preset = currentPreset;
+    }
   });
 
   handle.addEventListener('pointerup', (e) => {
@@ -313,7 +318,11 @@ document.addEventListener('DOMContentLoaded', () => {
     topCells: 1
   });
 
-  document.querySelector('.theme-toggle')?.addEventListener('click', toggleTheme);
+  // Theme toggle checkbox handler
+  const themeCheckbox = document.querySelector('#checkbox');
+  if (themeCheckbox) {
+    themeCheckbox.addEventListener('change', toggleTheme);
+  }
 
   // Recompute grid constants on resize
   let resizeTimer = null;

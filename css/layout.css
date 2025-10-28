@@ -1,29 +1,398 @@
-/* Layout / Playground styles */
+/* ===========================
+   Layout / Playground styles
+   =========================== */
 #playground {
-    position: relative;
-    height: 100vh;
-    padding: 32px;
-    overflow: auto;
+  position: relative;
+  height: 100vh;
+  padding: 32px;
+  overflow: auto;
 
-    /* Dots only in content box (inside padding) */
-    background-origin: content-box;
-    background-clip: content-box;
+  /* Dots only in content box (inside padding) */
+  background-origin: content-box;
+  background-clip: content-box;
 
-    background-color: transparent; /* let body gradient show through */
-    background-image: radial-gradient(circle at 0 0, var(--grid-dot) var(--grid-dot-size), transparent calc(var(--grid-dot-size) + 1px));
-    background-size: var(--grid-size) var(--grid-size);
-    /* include phase so visual dots line up with snapping math (origin + phase) */
-    background-position: var(--grid-phase-x) var(--grid-phase-y);
+  background-color: transparent; /* let body gradient show through if any */
+  background-image: radial-gradient(
+    circle at 0 0,
+    var(--grid-dot) var(--grid-dot-size),
+    transparent calc(var(--grid-dot-size) + 1px)
+  );
+  background-size: var(--grid-size) var(--grid-size);
+  /* include phase so visual dots line up with snapping math (origin + phase) */
+  background-position: var(--grid-phase-x) var(--grid-phase-y);
 }
 
-@media (min-width: 768px) {
-    #playground {
-        padding: 48px;
-    }
+@media (min-width: 768px) { #playground { padding: 48px; } }
+@media (min-width: 1024px) { #playground { padding: 64px; } }
+
+/* ================================================
+   Module Card — hardcoded fills + blue gradient border
+   ================================================ */
+.module-card {
+  /* layout */
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  cursor: grab;
+  user-select: none;
+
+  /* text color (fallbacks keep it readable per theme) */
+  color: var(--fg, #000);
+
+  /* effect variables */
+  --radius: 20px;
+  --ring-at-rest: 0px;                 /* ring thickness at rest */
+  --ring-on-hover: 3px;               /* ring thickness on hover */
+  --ring-grad: linear-gradient(163deg, #60a5fa 0%, #1d4ed8 100%); /* blue gradient */
+  --ring-shadow: rgba(96, 165, 250, 0.35); /* glow tint matching the gradient */
+  --ui-border-color: rgba(0,0,0,0.25);     /* handle lines, etc. */
+
+  /* keep box size fixed while animating the ring */
+  box-sizing: border-box;
+  border: solid transparent var(--ring-at-rest);
+  border-radius: var(--radius);
+
+  /* Layer 1: SOLID white fill (as a 1-stop gradient "image")
+     Layer 2: BLUE gradient ring (revealed by border-box clipping) */
+  background-image:
+    linear-gradient(#ffffff, #ffffff),
+    var(--ring-grad);
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+
+  /* Solid fallback just in case */
+  background-color: #ffffff;
+
+  transition: border-width .2s ease, transform .2s ease, box-shadow .3s ease;
 }
 
-@media (min-width: 1024px) {
-    #playground {
-        padding: 64px;
-    }
+/* Dark theme: hardcode black fill + adjust text/handle */
+:root[data-theme="dark"] .module-card {
+  color: var(--fg, #ffffff);
+  --ui-border-color: rgba(255,255,255,0.5);
+
+  background-image:
+    linear-gradient(#0b0b0b, #0b0b0b), /* solid near-black */
+    var(--ring-grad);
+  background-color: #0b0b0b;
+}
+
+.module-card:hover {
+  border-width: var(--ring-on-hover);  /* appears inward; no reflow */
+  transform: scale(0.98);              /* optional subtle shrink */
+  box-shadow: 0 0 30px 1px var(--ring-shadow);
+}
+
+.module-card:active {
+  cursor: grabbing;
+  transform: scale(0.96);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .module-card { transition: border-width .001s linear; }
+}
+
+/* =====================
+   Card content styling
+   ===================== */
+.card-header {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.card-body {
+  font-size: 0.875rem;
+  opacity: 0.7;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===========================
+   Card Size Variants System
+   =========================== */
+
+/* Hide all size variants by default */
+.card-body [data-size] {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+/* Show only the variant matching the card's preset size */
+.module-card[data-preset="S"] .card-body [data-size="small"] {
+  display: flex;
+}
+
+.module-card[data-preset="M"] .card-body [data-size="medium"] {
+  display: flex;
+}
+
+.module-card[data-preset="L"] .card-body [data-size="large"] {
+  display: flex;
+}
+
+/* Smooth transitions when switching sizes */
+.card-body [data-size] {
+  opacity: 0;
+  animation: fadeInCard 0.2s ease-out forwards;
+}
+
+@keyframes fadeInCard {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Small Card Display */
+.card-display-small {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.card-display-small > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-display-small .card-emoji {
+  font-size: clamp(2rem, 5vw, 2.5rem);
+  line-height: 1;
+  animation: floatEmoji 3s ease-in-out infinite;
+}
+
+.card-display-small .card-label-small {
+  font-size: clamp(0.875rem, 1.5vw, 1rem);
+  font-weight: 600;
+  color: var(--fg);
+  opacity: 0.85;
+}
+
+/* Medium Card Display */
+.card-display-medium {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  padding: 0 16px;
+  gap: 16px;
+}
+
+.card-display-medium .medium-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.card-display-medium .card-emoji {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  line-height: 1;
+}
+
+.card-display-medium .card-label {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 700;
+  color: var(--fg);
+}
+
+.card-display-medium .medium-right {
+  display: flex;
+  align-items: center;
+  text-align: right;
+}
+
+.card-display-medium .card-cta {
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+  font-style: italic;
+  color: var(--fg);
+  opacity: 0.65;
+  line-height: 1.3;
+}
+
+/* Large Card Display */
+.card-display-large {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.card-display-large .large-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 0 0 40%;
+  padding: 12px 16px 8px;
+}
+
+.card-display-large .card-emoji {
+  font-size: clamp(2.5rem, 5vw, 3rem);
+  line-height: 1;
+  animation: floatEmoji 3s ease-in-out infinite;
+}
+
+.card-display-large .card-title {
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  font-weight: 700;
+  color: var(--fg);
+  margin: 0;
+}
+
+.card-display-large .large-bottom {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px 16px;
+}
+
+.card-display-large .company-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  max-width: 320px;
+  max-height: 140px;
+}
+
+.card-display-large .company-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 10px 14px;
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06),
+              0 0 0 rgba(96, 165, 250, 0);
+}
+
+:root[data-theme="dark"] .card-display-large .company-logo {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3),
+              0 0 0 rgba(96, 165, 250, 0);
+}
+
+.card-display-large .company-logo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12),
+              0 0 20px rgba(96, 165, 250, 0.3);
+  border-color: rgba(96, 165, 250, 0.4);
+}
+
+:root[data-theme="dark"] .card-display-large .company-logo:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5),
+              0 0 25px rgba(96, 165, 250, 0.4);
+  border-color: rgba(96, 165, 250, 0.5);
+}
+
+.card-display-large .company-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  max-width: 70px;
+  max-height: 45px;
+  transition: transform 0.3s ease;
+}
+
+/* Invert BlackBerry logo in dark mode */
+:root[data-theme="dark"] .card-display-large .company-logo img[alt="BlackBerry"] {
+  filter: invert(1);
+}
+
+/* Swap Intact logo to dark mode version */
+:root[data-theme="dark"] .card-display-large .company-logo img[alt="Intact"] {
+  content: url('../logos/intact-darkmode.png');
+}
+
+.card-display-large .company-logo:hover img {
+  transform: scale(1.05);
+}
+
+@keyframes floatEmoji {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* ===========================
+   Dragging / Resizing states
+   =========================== */
+.module-card.dragging,
+.module-card.resizing {
+  cursor: grabbing;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+  backdrop-filter: blur(16px);
+  background: rgba(255,255,255,0.85); /* opaque enough to avoid transparency look */
+  z-index: 1000;
+  transition: none;
+  border-width: var(--ring-on-hover);
+  color: var(--fg, #000);
+}
+
+:root[data-theme="dark"] .module-card.dragging,
+:root[data-theme="dark"] .module-card.resizing {
+  background: rgba(11,11,11,0.85);
+  color: var(--fg, #fff);
+}
+
+.module-card .resizable-handle {
+  --handle-offset: 12px;   /* distance from card edge */
+  --handle-size: 12px;     /* size of the draggable handle */
+
+  position: absolute;
+  right: var(--handle-offset);
+  bottom: var(--handle-offset);
+  width: var(--handle-size);
+  height: var(--handle-size);
+
+  border-right: 2px solid var(--ui-border-color);
+  border-bottom: 2px solid var(--ui-border-color);
+  cursor: nwse-resize;
+
+  /* hidden until hover */
+  opacity: 0;
+  transform: translate(2px, 2px);
+  pointer-events: none;
+  transition: opacity .15s ease, transform .15s ease;
+  z-index: 1;
+}
+
+.module-card:hover .resizable-handle {
+  opacity: 1;
+  transform: translate(0, 0);
+  pointer-events: auto;
+}
+
+/* Always visible on touch devices (no hover) */
+@media (hover: none) {
+  .module-card .resizable-handle {
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
 }

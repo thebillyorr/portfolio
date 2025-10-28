@@ -1,86 +1,4 @@
-/* Components: module cards, dialogs, and theme toggle */
-
-/* Module Card - Draggable cards in playground */
-.module-card {
-    position: absolute;
-    width: 320px; 
-    height: 240px;
-    z-index: 1;
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    background: var(--card-bg);
-    padding: 16px;
-    cursor: grab;
-    user-select: none;
-    transition: all 0.2s ease;
-    will-change: left, top, width, height;
-}
-
-.module-card:hover:not(.dragging) {
-    transform: scale(1.02);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.10);
-}
-
-.module-card.dragging,
-.module-card.resizing {
-    cursor: grabbing;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-    backdrop-filter: blur(16px);
-    background: rgba(255,255,255,0.45);
-    z-index: 1000;
-    transition: none;
-}
-
-:root[data-theme="dark"] .module-card.dragging,
-:root[data-theme="dark"] .module-card.resizing {
-    background: rgba(0,0,0,0.45);
-}
-
-.module-title {
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.module-proof {
-    font-size: 0.875rem;
-    opacity: 0.7;
-}
-
-.module-card .resizable-handle {
-    position: absolute;
-    right: 6px;
-    bottom: 6px;
-    width: 12px;
-    height: 12px;
-    border-right: 2px solid var(--border);
-    border-bottom: 2px solid var(--border);
-    cursor: nwse-resize;
-}
-
-/* Dialog - Modal that opens when card is clicked */
-.dialog {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: none;
-    z-index: 100;
-}
-
-.dialog[aria-hidden="false"] {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.dialog-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.3);
-    backdrop-filter: blur(8px);
-    z-index: -1;
-}
+/* Components: module cards and theme toggle */
 
 /* Module Window - Modal styling */
 .module-window {
@@ -294,6 +212,19 @@
     }
 }
 
+/* Shimmer animation without size/scale changes - for certifications */
+@keyframes textShimmerNoScale {
+    0% {
+        background-position: 200% center;
+    }
+    50% {
+        background-position: -200% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
 /* Company name - default state */
 .company-name {
     position: relative;
@@ -341,10 +272,6 @@
     fill: #fff !important;
 }
 
-.company-name.sap-name {
-    animation: textShimmer 4s ease-in-out infinite;
-}
-
 .rp-item:has(.rp-logo.sap:hover) .company-name.sap-name {
     animation: textShimmer 4s ease-in-out infinite;
     background: linear-gradient(90deg,
@@ -385,10 +312,6 @@
     fill: var(--fg) !important;
 }
 
-.company-name.intact-name {
-    animation: textShimmer 4s ease-in-out infinite;
-}
-
 .rp-item:has(.rp-logo.intact:hover) .company-name.intact-name {
     animation: textShimmer 4s ease-in-out infinite;
     background: linear-gradient(90deg,
@@ -396,6 +319,145 @@
         #e3173e 33%,
         #00aebd 66%,
         #051922 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* BlackBerry logo - show as foreground color by default */
+.rp-logo.blackberry path {
+    fill: var(--fg) !important;
+    transition: fill 0.3s ease;
+}
+
+/* BlackBerry logo - restore original colors on hover */
+.rp-logo.blackberry:hover path {
+    fill: url(#blackberryGradient) !important;
+}
+
+.rp-item:has(.rp-logo.blackberry:hover) .company-name.blackberry-name {
+    animation: textShimmer 4s ease-in-out infinite;
+    background: linear-gradient(90deg,
+        #1172db 0%,
+        #01033e 50%,
+        #fff 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* UBC logo - show as foreground color by default */
+.rp-logo.ubc path {
+    fill: var(--fg) !important;
+    transition: fill 0.3s ease;
+}
+
+/* UBC logo - on hover, keep most paths as foreground in dark mode */
+:root[data-theme="light"] .rp-logo.ubc:hover path:first-of-type,
+:root[data-theme="light"] .rp-logo.ubc:hover path:nth-of-type(2),
+:root[data-theme="light"] .rp-logo.ubc:hover path:nth-of-type(5) {
+    fill: #22276c !important; /* dark blue - light mode only */
+}
+
+/* UBC gold path - show in both modes */
+.rp-logo.ubc:hover path:nth-of-type(3) {
+    fill: #d2b22c !important; /* gold */
+}
+
+/* Dark mode - keep all paths as foreground color except gold */
+:root[data-theme="dark"] .rp-logo.ubc:hover path:first-of-type,
+:root[data-theme="dark"] .rp-logo.ubc:hover path:nth-of-type(2),
+:root[data-theme="dark"] .rp-logo.ubc:hover path:nth-of-type(5) {
+    fill: var(--fg) !important;
+}
+
+.rp-item:has(.rp-logo.ubc:hover) .company-name.ubc-name {
+    animation: textShimmer 4s ease-in-out infinite;
+    background: linear-gradient(90deg,
+        #22276c 0%,
+        #d2b22c 50%,
+        #22276c 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Cyber Unit logo - show as foreground color by default */
+.rp-logo.cyberunit {
+    width: clamp(5rem, 10vw, 7rem);
+    height: clamp(5rem, 10vw, 7rem);
+}
+
+/* Light mode - invert logo to black */
+:root[data-theme="light"] .rp-logo.cyberunit {
+    filter: invert(1);
+}
+
+.rp-item:has(.rp-logo.cyberunit:hover) .company-name.cyberunit-name {
+    animation: textShimmer 4s ease-in-out infinite;
+    background: linear-gradient(90deg,
+        #040404 0%,
+        #fff 33%,
+        #08ADEA 66%,
+        #040404 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Security+ Certification Logo */
+.rp-logo.security-plus {
+    width: clamp(5rem, 10vw, 7rem);
+    height: clamp(5rem, 10vw, 7rem);
+}
+
+/* Dark mode - invert Security+ logo to white */
+:root[data-theme="dark"] .rp-logo.security-plus {
+    filter: invert(1);
+}
+
+/* Security+ Role text - gradient shimmer on logo hover (no size changes) */
+.rp-item:has(.rp-logo.security-plus:hover) .rp-role {
+    animation: textShimmerNoScale 4s ease-in-out infinite;
+    background: linear-gradient(90deg,
+        #ff0000 0%,      /* red */
+        #000000 33%,     /* black */
+        #808080 66%,     /* grey */
+        #ffffff 100%     /* white */
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* CC (Certified in Cybersecurity) Logo */
+.rp-logo.cc {
+    width: clamp(5rem, 10vw, 7rem);
+    height: clamp(5rem, 10vw, 7rem);
+}
+
+/* Dark mode - invert CC logo to white */
+:root[data-theme="dark"] .rp-logo.cc {
+    filter: invert(1);
+}
+
+/* CC Role text - gradient shimmer on logo hover (no size changes) */
+.rp-item:has(.rp-logo.cc:hover) .rp-role {
+    animation: textShimmerNoScale 6s ease-in-out infinite;
+    background: linear-gradient(90deg,
+        #99c23d 0%,      /* lime green */
+        #8cc0c2 33%,     /* teal */
+        #000000 66%,     /* black */
+        #ffffff 100%     /* white */
     );
     background-size: 200% 100%;
     -webkit-background-clip: text;
@@ -472,20 +534,3 @@
     }
 }
 
-/* Theme Toggle */
-.theme-toggle {
-    position: fixed;
-    top: 16px;
-    right: 16px;
-    z-index: 100;
-    border: none;
-    background: none;
-    cursor: pointer;
-    color: var(--fg);
-    opacity: 0.6;
-    transition: opacity 0.2s;
-}
-
-.theme-toggle:hover {
-    opacity: 1;
-}
