@@ -22,7 +22,77 @@
 .hero-name {
     font-weight: 700;
     color: rgb(var(--hero-key-glow));
-    filter: saturate(120%);
+    position: relative;
+    cursor: default;
+    display: inline-block;
+    
+    /* Medium glass-like shine with glow */
+    text-shadow: 
+        0 0 20px rgba(var(--hero-key-glow), 0.4),
+        0 0 35px rgba(var(--hero-key-glow), 0.2),
+        0 1px 2px rgba(0, 0, 0, 0.1),
+        0 -1px 1px rgba(255, 255, 255, 0.4);
+    
+    filter: saturate(135%) brightness(1.08);
+    
+    /* 3D perspective for tilt effect */
+    transform-style: preserve-3d;
+    transition: transform 0.15s ease-out, text-shadow 0.15s ease-out;
+}
+
+.hero-name:hover {
+    text-shadow: 
+        0 0 25px rgba(var(--hero-key-glow), 0.5),
+        0 0 40px rgba(var(--hero-key-glow), 0.25),
+        0 1px 2px rgba(0, 0, 0, 0.1),
+        0 -1px 1px rgba(255, 255, 255, 0.5);
+}
+
+/* Dark theme adjustments */
+:root[data-theme="dark"] .hero-name {
+    text-shadow: 
+        0 0 22px rgba(var(--hero-key-glow), 0.5),
+        0 0 38px rgba(var(--hero-key-glow), 0.25),
+        0 1px 2px rgba(0, 0, 0, 0.3),
+        0 -1px 1px rgba(255, 255, 255, 0.25);
+}
+
+:root[data-theme="dark"] .hero-name:hover {
+    text-shadow: 
+        0 0 28px rgba(var(--hero-key-glow), 0.6),
+        0 0 45px rgba(var(--hero-key-glow), 0.3),
+        0 1px 2px rgba(0, 0, 0, 0.3),
+        0 -1px 1px rgba(255, 255, 255, 0.35);
+}
+
+/* Sparkle effect */
+.sparkle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    pointer-events: none;
+    animation: sparkleFloat 0.8s ease-out forwards;
+    z-index: 10;
+}
+
+.sparkle svg {
+    width: 100%;
+    height: 100%;
+    fill: rgb(var(--hero-key-glow));
+}
+
+@keyframes sparkleFloat {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(0) rotate(0deg);
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--tx), var(--ty)) scale(1) rotate(180deg);
+    }
 }
 
 /* Gallery - Floating stacked squares */

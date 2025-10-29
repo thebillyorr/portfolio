@@ -29,16 +29,16 @@ export const CARD_CONTENT = {
         <div class="large-bottom">
           <div class="company-grid">
             <div class="company-logo">
-              <img src="logos/microsoft.svg" alt="Microsoft" />
+              <img src="assets/logos/microsoft.svg" alt="Microsoft" />
             </div>
             <div class="company-logo">
-              <img src="logos/sap.svg" alt="SAP" />
+              <img src="assets/logos/sap.svg" alt="SAP" />
             </div>
             <div class="company-logo">
-              <img src="logos/intact.svg" alt="Intact" />
+              <img src="assets/logos/intact.svg" alt="Intact" />
             </div>
             <div class="company-logo">
-              <img src="logos/blackberry.svg" alt="BlackBerry" />
+              <img src="assets/logos/blackberry.svg" alt="BlackBerry" />
             </div>
           </div>
         </div>
@@ -177,7 +177,7 @@ export const CARD_CONTENT = {
 
           <li class="rp-item">
             <div class="rp-logo-section">
-              <img class="rp-logo cyberunit" src="logos/cyberunit.png" alt="Cyber Unit" />
+              <img class="rp-logo cyberunit" src="assets/logos/cyberunit.png" alt="Cyber Unit" />
               <div class="rp-meta">📍 Vancouver, CAN</div>
             </div>
             <div class="rp-job">
@@ -210,7 +210,7 @@ export const CARD_CONTENT = {
 
           <li class="rp-item">
             <div class="rp-logo-section">
-              <img class="rp-logo security-plus" src="logos/securityplus-black.png" alt="CompTIA Security+" loading="lazy">
+              <img class="rp-logo security-plus" src="assets/logos/securityplus-black.png" alt="CompTIA Security+" loading="lazy">
               <div class="rp-meta">CompTIA Security+</div>
             </div>
             <div class="rp-job">
@@ -222,7 +222,7 @@ export const CARD_CONTENT = {
 
           <li class="rp-item">
             <div class="rp-logo-section">
-              <img class="rp-logo cc" src="logos/cc-black.png" alt="ISC2 CC" loading="lazy">
+              <img class="rp-logo cc" src="assets/logos/cc-black.png" alt="ISC2 CC" loading="lazy">
               <div class="rp-meta">ISC2 Certified in Cybersecurity</div>
             </div>
             <div class="rp-job">
@@ -235,5 +235,193 @@ export const CARD_CONTENT = {
       </div>
     `
   },
+
+  posters: {
+    small: `
+      <div class="card-display-small">
+        <div>
+          <span class="card-emoji">🎨</span>
+          <span class="card-label-small">Posters</span>
+        </div>
+      </div>
+    `,
+    medium: `
+      <div class="card-display-medium">
+        <div class="medium-left">
+          <span class="card-emoji">🎨</span>
+          <span class="card-label">Posters</span>
+        </div>
+        <div class="medium-right">
+          <span class="card-cta">Browse my design portfolio</span>
+        </div>
+      </div>
+    `,
+    large: `
+      <div class="card-display-large">
+        <div class="poster-preview-grid">
+          <img src="assets/posters/poster-5.png" alt="Poster 5" class="poster-preview-img" />
+          <img src="assets/posters/poster-2.png" alt="Poster 2" class="poster-preview-img" />
+          <img src="assets/posters/poster-3.png" alt="Poster 3" class="poster-preview-img" />
+          <img src="assets/posters/poster-9.png" alt="Poster 9" class="poster-preview-img" />
+          <img src="assets/posters/poster-7.png" alt="Poster 7" class="poster-preview-img" />
+          <img src="assets/posters/poster-15.png" alt="Poster 16" class="poster-preview-img" />
+        </div>
+      </div>
+    `,
+    modal: `
+      <div class="poster-gallery">
+        <header class="poster-gallery-header">
+          <h2 class="poster-gallery-title">Poster Gallery</h2>
+          <p class="poster-gallery-subtitle">A self-taught design journey</p>
+        </header>
+
+        <div class="poster-story">
+          <div class="poster-story-column">
+            <p>Ever since the lockdown in 2020, I embarked on a creative journey that would transform a period of uncertainty into an opportunity for growth. With no formal training or education in graphic design, I decided to teach myself how to make posters from the ground up. </p>
+            <p>The posters showcased in this gallery represent a snapshot of the 106 posters I created throughout the span of two years.</p>
+          </div>
+          <div class="poster-story-column">
+            <p>Today, I continue to refine my craft and push my boundaries. I'm actively expanding my design skills into other online mediums - exploring new territories where graphic design intersects with digital experiences.</p>
+            <p>You can follow my journey on Instagram @ <a href="https://www.instagram.com/106network" target="_blank" style="color: rgb(140, 180, 255); text-decoration: none;">106network</a></p>
+          </div>
+        </div>
+
+        <ul class="poster-grid">
+          <li class="poster-item">
+            <img src="assets/posters/poster-1.png" alt="Poster Design 1" class="poster-image">
+            <div class="poster-overlay">
+              <h3 class="poster-title">Design 1</h3>
+              <p class="poster-description">Self-taught graphic design work</p>
+            </div>
+          </li>
+
+          <li class="poster-item">
+            <img src="assets/posters/poster-2.png" alt="Poster Design 2" class="poster-image">
+            <div class="poster-overlay">
+              <h3 class="poster-title">Design 2</h3>
+              <p class="poster-description">Self-taught graphic design work</p>
+            </div>
+          </li>
+
+          <li class="poster-item">
+            <img src="assets/posters/poster-3.png" alt="Poster Design 3" class="poster-image">
+            <div class="poster-overlay">
+              <h3 class="poster-title">Design 3</h3>
+              <p class="poster-description">Self-taught graphic design work</p>
+            </div>
+          </li>
+
+          <li class="poster-item">
+            <img src="assets/posters/poster-4.png" alt="Poster Design 4" class="poster-image">
+            <div class="poster-overlay">
+              <h3 class="poster-title">Design 4</h3>
+              <p class="poster-description">Self-taught graphic design work</p>
+            </div>
+          </li>
+
+          <li class="poster-item">
+            <img src="assets/posters/poster-5.png" alt="Poster Design 5" class="poster-image">
+            <div class="poster-overlay">
+              <h3 class="poster-title">Design 5</h3>
+              <p class="poster-description">Self-taught graphic design work</p>
+            </div>
+          </li>
+
+          <li class="poster-item">
+            <img src="assets/posters/poster-6.png" alt="Poster Design 6" class="poster-image">
+            <div class="poster-overlay">
+              <h3 class="poster-title">Design 6</h3>
+              <p class="poster-description">Self-taught graphic design work</p>
+            </div>
+          </li>
+
+          <li class="poster-item">
+            <img src="assets/posters/poster-7.png" alt="Poster Design 7" class="poster-image">
+            <div class="poster-overlay">
+              <h3 class="poster-title">Design 7</h3>
+              <p class="poster-description">Self-taught graphic design work</p>
+            </div>
+          </li>
+
+          <li class="poster-item">
+            <img src="assets/posters/poster-8.png" alt="Poster Design 8" class="poster-image">
+            <div class="poster-overlay">
+              <h3 class="poster-title">Design 8</h3>
+              <p class="poster-description">Self-taught graphic design work</p>
+            </div>
+          </li>
+
+          <li class="poster-item">
+            <img src="assets/posters/poster-9.png" alt="Poster Design 9" class="poster-image">
+            <div class="poster-overlay">
+              <h3 class="poster-title">Design 9</h3>
+              <p class="poster-description">Self-taught graphic design work</p>
+            </div>
+          </li>
+
+          <li class="poster-item">
+            <img src="assets/posters/poster-10.png" alt="Poster Design 10" class="poster-image">
+            <div class="poster-overlay">
+              <h3 class="poster-title">Design 10</h3>
+              <p class="poster-description">Self-taught graphic design work</p>
+            </div>
+          </li>
+
+          <li class="poster-item">
+            <img src="assets/posters/poster-11.png" alt="Poster Design 11" class="poster-image">
+            <div class="poster-overlay">
+              <h3 class="poster-title">Design 11</h3>
+              <p class="poster-description">Self-taught graphic design work</p>
+            </div>
+          </li>
+
+          <li class="poster-item">
+            <img src="assets/posters/poster-12.png" alt="Poster Design 12" class="poster-image">
+            <div class="poster-overlay">
+              <h3 class="poster-title">Design 12</h3>
+              <p class="poster-description">Self-taught graphic design work</p>
+            </div>
+          </li>
+
+          <li class="poster-item">
+            <img src="assets/posters/poster-13.png" alt="Poster Design 13" class="poster-image">
+            <div class="poster-overlay">
+              <h3 class="poster-title">Design 13</h3>
+              <p class="poster-description">Self-taught graphic design work</p>
+            </div>
+          </li>
+
+          <li class="poster-item">
+            <img src="assets/posters/poster-14.png" alt="Poster Design 14" class="poster-image">
+            <div class="poster-overlay">
+              <h3 class="poster-title">Design 14</h3>
+              <p class="poster-description">Self-taught graphic design work</p>
+            </div>
+          </li>
+
+          <li class="poster-item">
+            <img src="assets/posters/poster-15.png" alt="Poster Design 15" class="poster-image">
+            <div class="poster-overlay">
+              <h3 class="poster-title">Design 15</h3>
+              <p class="poster-description">Self-taught graphic design work</p>
+            </div>
+          </li>
+
+          <li class="poster-item">
+            <img src="assets/posters/poster-16.png" alt="Poster Design 16" class="poster-image">
+            <div class="poster-overlay">
+              <h3 class="poster-title">Design 16</h3>
+              <p class="poster-description">Self-taught graphic design work</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="poster-lightbox">
+        <button class="poster-lightbox-close" aria-label="Close">×</button>
+        <img src="" alt="" class="poster-lightbox-image">
+      </div>
+    `
+  }
 
 };

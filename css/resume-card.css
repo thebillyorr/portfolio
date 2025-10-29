@@ -1,0 +1,525 @@
+/* Resume Card - Timeline Layout and Styling */
+
+/* Resume Card - Timeline Layout */
+.rp {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rp-header {
+    text-align: center;
+    margin-bottom: clamp(1.5rem, 5vw, 2rem);
+}
+
+.rp-title {
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    font-weight: 800;
+    margin: 0;
+    color: var(--fg);
+}
+
+.rp-menu {
+    display: none;
+}
+
+.rp-section {
+    display: none;
+    list-style: none;
+    margin: clamp(1.5rem, 4vw, 2rem) 0 0 0;
+    padding: 0 clamp(4rem, 15vw, 7rem);
+    width: 100%;
+}
+
+.rp-section.active {
+    display: block;
+}
+
+.rp-item {
+    display: flex;
+    gap: clamp(1.5rem, 3vw, 2rem);
+    align-items: center;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    margin: clamp(1rem, 2vw, 1.5rem) auto;
+    width: 100%;
+    
+    /* Glassmorphic card effect */
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rp-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark theme glassmorphism */
+:root[data-theme="dark"] .rp-item {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+:root[data-theme="dark"] .rp-item:hover {
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+}
+
+.rp-item:nth-child(odd) {
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.rp-item:nth-child(even) {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.rp-item:nth-child(even) .rp-job {
+    text-align: right;
+}
+
+.rp-logo {
+    width: clamp(5rem, 10vw, 7rem);
+    height: clamp(5rem, 10vw, 7rem);
+    display: grid;
+    place-items: center;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    flex-shrink: 0;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    cursor: pointer;
+}
+
+.rp-logo-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(0.5rem, 1vw, 0.75rem);
+    flex-shrink: 0;
+}
+
+.rp-logo-section .rp-meta {
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+    text-align: center;
+    opacity: 1;
+}
+
+.rp-logo:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Neumorphic Action Button */
+.rp-action-btn {
+    appearance: none;
+    border: 1px solid var(--bg);
+    background: var(--bg);
+    width: clamp(3.5rem, 7vw, 4.5rem);
+    height: clamp(3.5rem, 7vw, 4.5rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: clamp(0.5rem, 1vw, 0.75rem);
+    color: var(--fg);
+    flex-shrink: 0;
+    pointer-events: auto;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15), -6px -6px 12px rgba(255, 255, 255, 0.8);
+    transform: rotate(var(--rotation, 0deg));
+}
+
+:root[data-theme="dark"] .rp-action-btn {
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.5), -6px -6px 12px rgba(255, 255, 255, 0.1);
+}
+
+/* Positioned button variant */
+.rp-action-btn.positioned {
+    position: absolute;
+    top: -clamp(1.5rem, 3vw, 2rem);
+    right: clamp(1rem, 5vw, 2rem);
+}
+
+.rp-item {
+    position: relative;
+}
+
+.rp-action-btn__logo {
+    width: 80%;
+    height: 80%;
+    fill: var(--fg);
+    transition: all 0.3s ease;
+}
+
+.rp-action-btn:hover .rp-action-btn__logo {
+    fill: rgb(var(--hero-key-glow));
+    filter: drop-shadow(0 0 8px rgb(var(--hero-key-glow))) drop-shadow(0 0 16px rgba(140, 180, 255, 0.6));
+}
+
+/* Microsoft logo - show as foreground color by default */
+.rp-logo.microsoft path {
+    fill: var(--fg) !important;
+    transition: fill 0.3s ease;
+}
+
+/* Microsoft logo - restore original colors on hover over the logo itself */
+.rp-logo.microsoft:hover path:nth-child(1) {
+    fill: #f35325 !important; /* red */
+}
+
+.rp-logo.microsoft:hover path:nth-child(2) {
+    fill: #81bc06 !important; /* green */
+}
+
+.rp-logo.microsoft:hover path:nth-child(3) {
+    fill: #05a6f0 !important; /* blue */
+}
+
+.rp-logo.microsoft:hover path:nth-child(4) {
+    fill: #ffba08 !important; /* yellow */
+}
+
+/* Generic text shimmer animation */
+@keyframes textShimmer {
+    0% {
+        background-position: 200% center;
+        transform: translateY(0) scaleX(1);
+        letter-spacing: 0;
+    }
+    50% {
+        background-position: -200% center;
+        transform: translateY(-3px) scaleX(1.02);
+        letter-spacing: 0.5px;
+    }
+    100% {
+        background-position: 200% center;
+        transform: translateY(0) scaleX(1);
+        letter-spacing: 0;
+    }
+}
+
+/* Shimmer animation without size/scale changes - for certifications */
+@keyframes textShimmerNoScale {
+    0% {
+        background-position: 200% center;
+    }
+    50% {
+        background-position: -200% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+/* Company name - default state */
+.company-name {
+    position: relative;
+    color: var(--fg);
+    transition: all 0.3s ease;
+}
+
+/* Microsoft text animation on logo hover */
+.rp-item:has(.rp-logo.microsoft:hover) .company-name.microsoft-name {
+    animation: textShimmer 4s ease-in-out infinite;
+    background: linear-gradient(90deg,
+        #f35325 0%,
+        #81bc06 25%,
+        #05a6f0 50%,
+        #ffba08 75%,
+        #f35325 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* SAP logo - first path (main shape) in foreground color by default */
+.rp-logo.sap path:first-of-type {
+    fill: var(--fg) !important;
+    transition: fill 0.3s ease;
+}
+
+/* SAP logo - text paths in background color by default */
+.rp-logo.sap path:nth-of-type(2),
+.rp-logo.sap path:nth-of-type(3) {
+    fill: var(--bg) !important;
+    transition: fill 0.3s ease;
+}
+
+/* SAP logo - restore original gradient on hover (only first path) */
+.rp-logo.sap:hover path:first-of-type {
+    fill: url(#b) !important;
+}
+
+/* SAP logo - text white on hover */
+.rp-logo.sap:hover path:nth-of-type(2),
+.rp-logo.sap:hover path:nth-of-type(3) {
+    fill: #fff !important;
+}
+
+.rp-item:has(.rp-logo.sap:hover) .company-name.sap-name {
+    animation: textShimmer 4s ease-in-out infinite;
+    background: linear-gradient(90deg,
+        #00b8f1 0%,
+        #06a5e5 25%,
+        #1870c5 50%,
+        #1d61bc 75%,
+        #00b8f1 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Intact logo - show as foreground color by default */
+.rp-logo.intact polygon {
+    fill: var(--fg) !important;
+    transition: fill 0.3s ease;
+}
+
+.rp-logo.intact path {
+    fill: var(--fg) !important;
+    transition: fill 0.3s ease;
+}
+
+/* Intact logo - restore original colors on hover */
+.rp-logo.intact:hover polygon {
+    fill: #C60C30 !important; /* red */
+}
+
+/* Text paths - show foreground color on hover */
+.rp-logo.intact:hover path.st1,
+.rp-logo.intact:hover path.st2,
+.rp-logo.intact:hover path.st3,
+.rp-logo.intact:hover path.st4,
+.rp-logo.intact:hover path.st5 {
+    fill: var(--fg) !important;
+}
+
+.rp-item:has(.rp-logo.intact:hover) .company-name.intact-name {
+    animation: textShimmer 4s ease-in-out infinite;
+    background: linear-gradient(90deg,
+        #051922 0%,
+        #e3173e 33%,
+        #00aebd 66%,
+        #051922 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* BlackBerry logo - show as foreground color by default */
+.rp-logo.blackberry path {
+    fill: var(--fg) !important;
+    transition: fill 0.3s ease;
+}
+
+/* BlackBerry logo - restore original colors on hover */
+.rp-logo.blackberry:hover path {
+    fill: url(#blackberryGradient) !important;
+}
+
+.rp-item:has(.rp-logo.blackberry:hover) .company-name.blackberry-name {
+    animation: textShimmer 4s ease-in-out infinite;
+    background: linear-gradient(90deg,
+        #1172db 0%,
+        #01033e 50%,
+        #fff 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* UBC logo - show as foreground color by default */
+.rp-logo.ubc path {
+    fill: var(--fg) !important;
+    transition: fill 0.3s ease;
+}
+
+/* UBC logo - on hover, keep most paths as foreground in dark mode */
+:root[data-theme="light"] .rp-logo.ubc:hover path:first-of-type,
+:root[data-theme="light"] .rp-logo.ubc:hover path:nth-of-type(2),
+:root[data-theme="light"] .rp-logo.ubc:hover path:nth-of-type(5) {
+    fill: #22276c !important; /* dark blue - light mode only */
+}
+
+/* UBC gold path - show in both modes */
+.rp-logo.ubc:hover path:nth-of-type(3) {
+    fill: #d2b22c !important; /* gold */
+}
+
+/* Dark mode - keep all paths as foreground color except gold */
+:root[data-theme="dark"] .rp-logo.ubc:hover path:first-of-type,
+:root[data-theme="dark"] .rp-logo.ubc:hover path:nth-of-type(2),
+:root[data-theme="dark"] .rp-logo.ubc:hover path:nth-of-type(5) {
+    fill: var(--fg) !important;
+}
+
+.rp-item:has(.rp-logo.ubc:hover) .company-name.ubc-name {
+    animation: textShimmer 4s ease-in-out infinite;
+    background: linear-gradient(90deg,
+        #22276c 0%,
+        #d2b22c 50%,
+        #22276c 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Cyber Unit logo - show as foreground color by default */
+.rp-logo.cyberunit {
+    width: clamp(5rem, 10vw, 7rem);
+    height: clamp(5rem, 10vw, 7rem);
+}
+
+/* Light mode - invert logo to black */
+:root[data-theme="light"] .rp-logo.cyberunit {
+    filter: invert(1);
+}
+
+.rp-item:has(.rp-logo.cyberunit:hover) .company-name.cyberunit-name {
+    animation: textShimmer 4s ease-in-out infinite;
+    background: linear-gradient(90deg,
+        #040404 0%,
+        #fff 33%,
+        #08ADEA 66%,
+        #040404 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Security+ Certification Logo */
+.rp-logo.security-plus {
+    width: clamp(5rem, 10vw, 7rem);
+    height: clamp(5rem, 10vw, 7rem);
+}
+
+/* Dark mode - invert Security+ logo to white */
+:root[data-theme="dark"] .rp-logo.security-plus {
+    filter: invert(1);
+}
+
+/* Security+ Role text - gradient shimmer on logo hover (no size changes) */
+.rp-item:has(.rp-logo.security-plus:hover) .rp-role {
+    animation: textShimmerNoScale 4s ease-in-out infinite;
+    background: linear-gradient(90deg,
+        #ff0000 0%,      /* red */
+        #000000 33%,     /* black */
+        #808080 66%,     /* grey */
+        #ffffff 100%     /* white */
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* CC (Certified in Cybersecurity) Logo */
+.rp-logo.cc {
+    width: clamp(5rem, 10vw, 7rem);
+    height: clamp(5rem, 10vw, 7rem);
+}
+
+/* Dark mode - invert CC logo to white */
+:root[data-theme="dark"] .rp-logo.cc {
+    filter: invert(1);
+}
+
+/* CC Role text - gradient shimmer on logo hover (no size changes) */
+.rp-item:has(.rp-logo.cc:hover) .rp-role {
+    animation: textShimmerNoScale 6s ease-in-out infinite;
+    background: linear-gradient(90deg,
+        #99c23d 0%,      /* lime green */
+        #8cc0c2 33%,     /* teal */
+        #000000 66%,     /* black */
+        #ffffff 100%     /* white */
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Tagline - Desktop only */
+.rp-tagline {
+    display: none;
+}
+
+@media (min-width: 769px) {
+    .rp-tagline {
+        display: block;
+        font-size: clamp(0.85rem, 1.5vw, 1rem);
+        font-style: italic;
+        color: var(--fg);
+        opacity: 0.75;
+        line-height: 1.4;
+        max-width: var(--max-width, clamp(120px, 15vw, 200px));
+        transform: rotate(var(--rotation, 0deg));
+        flex-shrink: 0;
+    }
+
+
+}
+
+.rp-job {
+    text-align: left;
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.rp-role {
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+    font-weight: 700;
+    color: var(--fg);
+    margin: 0 0 0.375rem 0;
+}
+
+.rp-meta {
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+    color: var(--fg);
+    opacity: 0.7;
+    margin: 0.125rem 0;
+}
+
+@media (max-width: 768px) {
+    .rp-item {
+        flex-direction: row !important;
+        justify-content: center !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .rp-item:nth-child(even) {
+        flex-direction: row !important;
+    }
+
+    .rp-item:nth-child(even) .rp-job {
+        text-align: left;
+    }
+
+    .rp-job {
+        text-align: left;
+    }
+
+    .rp-action-btn {
+        display: none;
+    }
+}

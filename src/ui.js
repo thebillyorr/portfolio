@@ -95,7 +95,6 @@ export function openModuleWindow(card) {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    background: 'var(--bg)',
     borderRadius: '14px',
     padding: '18px',
     width: '90vw',
@@ -134,11 +133,21 @@ export function openModuleWindow(card) {
 
   import('./content.js').then(({ CARD_CONTENT }) => {
     body.innerHTML = CARD_CONTENT[id]?.modal || '<p>No content yet.</p>';
+    
+    // Initialize poster gallery interactions if this is the posters card
+    if (id === 'posters') {
+      initializePosterGallery(body);
+    }
   });
 
   win.appendChild(body);
 
+  // === Create Backdrop ===
+  const backdrop = document.createElement('div');
+  backdrop.className = 'module-window-backdrop';
+
   // === Mount ===
+  document.body.appendChild(backdrop);
   document.body.appendChild(win);
 
   // Lock background scroll
@@ -152,14 +161,55 @@ export function openModuleWindow(card) {
   }
   function closeWindow() {
     window.removeEventListener('keydown', onKey);
+    backdrop.remove();
     win.remove();
     document.body.classList.remove('modal-open'); // re-enable page scroll
   }
 
   window.addEventListener('keydown', onKey);
   closeBtn.addEventListener('click', closeWindow);
+  backdrop.addEventListener('click', closeWindow);
 }
 
+// Poster Gallery Interactions
+export function initializePosterGallery(modalContent) {
+  const posterItems = modalContent.querySelectorAll('.poster-item');
+  const lightbox = modalContent.querySelector('.poster-lightbox');
+  const lightboxImage = modalContent.querySelector('.poster-lightbox-image');
+  const lightboxClose = modalContent.querySelector('.poster-lightbox-close');
+
+  // Lightbox functionality
+  posterItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const img = item.querySelector('.poster-image');
+      const title = item.querySelector('.poster-title')?.textContent || '';
+      
+      lightboxImage.src = img.src;
+      lightboxImage.alt = title;
+      lightbox.classList.add('active');
+    });
+  });
+
+  // Close lightbox
+  const closeLightbox = () => {
+    lightbox.classList.remove('active');
+  };
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+      closeLightbox();
+    }
+  });
+
+  // Close lightbox on Escape key
+  const handleEscape = (e) => {
+    if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+      closeLightbox();
+    }
+  };
+  window.addEventListener('keydown', handleEscape);
+}
 
 
 

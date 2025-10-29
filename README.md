@@ -1,33 +1,43 @@
-# Personal Universe — Modular Playground
+# Personal Universe
 
-## Overview
-Personal Universe is a modular playground personal website built using vanilla HTML, CSS, and JavaScript. The website features a full-screen hero section, a playground for interactive modules, and a light/dark mode toggle.
+My personal portfolio site. A modular playground with draggable cards, glassmorphic design, and some fun interactive effects.
 
-## Project Structure
+## What's Here
+
+- **Interactive hero section** - Name tracks your mouse with sparkle effects
+- **Draggable playground** - Move and resize cards on a snapping grid
+- **Resume timeline** - Career history with animated company logos
+- **Design portfolio** - Collection of posters with lightbox viewer
+- **Photo gallery** - Random selection from various adventures
+- **Theme toggle** - Animated day/night switch
+- **Glassmorphism** - Frosted glass effects throughout
+
+## Tech Stack
+
+Built with vanilla HTML, CSS, and JavaScript. No frameworks, just modern web features:
+- CSS Grid & Flexbox for layouts
+- backdrop-filter for glassmorphic effects  
+- CSS custom properties for theming
+- ES6 modules for code organization
+- localStorage for persistence
+
+## Structure
+
 ```
-personal-universe
-├── index.html        # Main HTML file for the website
-├── styles.css        # Stylesheet for the website
-├── app.js            # JavaScript file for interactivity
-├── assets            # Folder for storing images and other assets
-│   └── placeholders  # Placeholder images
-│       └── README.md # Placeholder for future assets
-└── README.md         # Project documentation
+├── css/              # Modular stylesheets
+├── src/              # JavaScript modules
+├── assets/           # Images, logos, posters
+└── index.html        # Entry point
 ```
 
-## Features
-- Full-screen hero section with placeholder text and scroll cue.
-- Playground with a faint dot-grid background and draggable, resizable cards (modules).
-- Responsive design for both desktop and mobile views.
-- Light/Dark mode toggle with persistence using localStorage.
-- Accessibility considerations and reduced motion support.
+## Running Locally
 
-## Setup
-1. Clone the repository or download the project files.
-2. Open `index.html` in a web browser to view the website.
-3. Modify `styles.css` and `app.js` as needed to customize the appearance and functionality.
+Just open `index.html` in a browser, or use any local server:
 
-## Future Improvements
-- Add real content to the modules.
-- Enhance styles for a more polished look.
-- Implement additional features based on user feedback.
+```bash
+npx serve
+```
+
+---
+
+Built by Billy Orr

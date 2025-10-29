@@ -26,7 +26,7 @@
 @media (min-width: 1024px) { #playground { padding: 64px; } }
 
 /* ================================================
-   Module Card — hardcoded fills + blue gradient border
+   Module Card — Glassmorphism effect
    ================================================ */
 .module-card {
   /* layout */
@@ -35,52 +35,74 @@
   padding: 16px;
   cursor: grab;
   user-select: none;
+  position: relative;
 
   /* text color (fallbacks keep it readable per theme) */
   color: var(--fg, #000);
 
   /* effect variables */
-  --radius: 20px;
-  --ring-at-rest: 0px;                 /* ring thickness at rest */
-  --ring-on-hover: 3px;               /* ring thickness on hover */
-  --ring-grad: linear-gradient(163deg, #60a5fa 0%, #1d4ed8 100%); /* blue gradient */
-  --ring-shadow: rgba(96, 165, 250, 0.35); /* glow tint matching the gradient */
   --ui-border-color: rgba(0,0,0,0.25);     /* handle lines, etc. */
 
-  /* keep box size fixed while animating the ring */
-  box-sizing: border-box;
-  border: solid transparent var(--ring-at-rest);
-  border-radius: var(--radius);
+  /* Glassmorphism effect - light mode */
+  background: rgba(255, 255, 255, 0.01);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(9.9px);
+  -webkit-backdrop-filter: blur(9.9px);
+  border: 1px solid rgba(255, 255, 255, 1);
 
-  /* Layer 1: SOLID white fill (as a 1-stop gradient "image")
-     Layer 2: BLUE gradient ring (revealed by border-box clipping) */
-  background-image:
-    linear-gradient(#ffffff, #ffffff),
-    var(--ring-grad);
-  background-origin: padding-box, border-box;
-  background-clip: padding-box, border-box;
-
-  /* Solid fallback just in case */
-  background-color: #ffffff;
-
-  transition: border-width .2s ease, transform .2s ease, box-shadow .3s ease;
+  transition: transform .2s ease, box-shadow .3s ease;
 }
 
-/* Dark theme: hardcode black fill + adjust text/handle */
+/* Gradient border on hover using pseudo-element */
+.module-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 16px;
+  padding: 2px;
+  background: linear-gradient(135deg, #60a5fa 0%, #06b6d4 50%, #3b82f6 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity .2s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.module-card:hover::before {
+  opacity: 1;
+}
+
+/* Dark theme: glassmorphism with black */
 :root[data-theme="dark"] .module-card {
   color: var(--fg, #ffffff);
-  --ui-border-color: rgba(255,255,255,0.5);
+  --ui-border-color: rgba(255,255,255,0.1);
 
-  background-image:
-    linear-gradient(#0b0b0b, #0b0b0b), /* solid near-black */
-    var(--ring-grad);
-  background-color: #0b0b0b;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(9.9px);
+  -webkit-backdrop-filter: blur(9.9px);
+  border: 1px solid rgba(0, 0, 0, 1);
 }
 
 .module-card:hover {
-  border-width: var(--ring-on-hover);  /* appears inward; no reflow */
-  transform: scale(0.98);              /* optional subtle shrink */
-  box-shadow: 0 0 30px 1px var(--ring-shadow);
+  transform: scale(0.98);
+  box-shadow: 
+    0 8px 40px rgba(0, 0, 0, 0.15),
+    0 0 20px rgba(96, 165, 250, 0.4),
+    0 0 40px rgba(6, 182, 212, 0.3),
+    0 0 60px rgba(59, 130, 246, 0.2);
+}
+
+:root[data-theme="dark"] .module-card:hover {
+  box-shadow: 
+    0 8px 40px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(96, 165, 250, 0.5),
+    0 0 40px rgba(6, 182, 212, 0.4),
+    0 0 60px rgba(59, 130, 246, 0.3);
 }
 
 .module-card:active {
@@ -90,7 +112,7 @@
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .module-card { transition: border-width .001s linear; }
+  .module-card { transition: none; }
 }
 
 /* =====================
@@ -103,7 +125,7 @@
 
 .card-body {
   font-size: 0.875rem;
-  opacity: 0.7;
+  opacity: 1;
   flex: 1;
   display: flex;
   align-items: center;
@@ -323,7 +345,7 @@
 
 /* Swap Intact logo to dark mode version */
 :root[data-theme="dark"] .card-display-large .company-logo img[alt="Intact"] {
-  content: url('../logos/intact-darkmode.png');
+  content: url('../assets/logos/intact-darkmode.png');
 }
 
 .card-display-large .company-logo:hover img {
@@ -346,17 +368,17 @@
 .module-card.resizing {
   cursor: grabbing;
   box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-  backdrop-filter: blur(16px);
-  background: rgba(255,255,255,0.85); /* opaque enough to avoid transparency look */
+  backdrop-filter: blur(9.9px);
+  -webkit-backdrop-filter: blur(9.9px);
+  background: rgba(255, 255, 255, 0.1); /* keep glassmorphism effect */
   z-index: 1000;
   transition: none;
-  border-width: var(--ring-on-hover);
   color: var(--fg, #000);
 }
 
 :root[data-theme="dark"] .module-card.dragging,
 :root[data-theme="dark"] .module-card.resizing {
-  background: rgba(11,11,11,0.85);
+  background: rgba(0, 0, 0, 0.1);
   color: var(--fg, #fff);
 }
 
@@ -370,8 +392,8 @@
   width: var(--handle-size);
   height: var(--handle-size);
 
-  border-right: 2px solid var(--ui-border-color);
-  border-bottom: 2px solid var(--ui-border-color);
+  border-right: 2px solid var(--fg);
+  border-bottom: 2px solid var(--fg);
   cursor: nwse-resize;
 
   /* hidden until hover */
