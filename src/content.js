@@ -290,7 +290,7 @@ export const CARD_CONTENT = {
           <li class="poster-item">
             <img src="assets/posters/poster-1.png" alt="Poster Design 1" class="poster-image">
             <div class="poster-overlay">
-              <h3 class="poster-title">Design 1</h3>
+              <h3 class="poster-title">Caution</h3>
               <p class="poster-description">Self-taught graphic design work</p>
             </div>
           </li>
@@ -298,7 +298,7 @@ export const CARD_CONTENT = {
           <li class="poster-item">
             <img src="assets/posters/poster-2.png" alt="Poster Design 2" class="poster-image">
             <div class="poster-overlay">
-              <h3 class="poster-title">Design 2</h3>
+              <h3 class="poster-title">Polar Opposites</h3>
               <p class="poster-description">Self-taught graphic design work</p>
             </div>
           </li>
@@ -306,7 +306,7 @@ export const CARD_CONTENT = {
           <li class="poster-item">
             <img src="assets/posters/poster-3.png" alt="Poster Design 3" class="poster-image">
             <div class="poster-overlay">
-              <h3 class="poster-title">Design 3</h3>
+              <h3 class="poster-title">画彩堂</h3>
               <p class="poster-description">Self-taught graphic design work</p>
             </div>
           </li>
@@ -314,7 +314,7 @@ export const CARD_CONTENT = {
           <li class="poster-item">
             <img src="assets/posters/poster-4.png" alt="Poster Design 4" class="poster-image">
             <div class="poster-overlay">
-              <h3 class="poster-title">Design 4</h3>
+              <h3 class="poster-title">Change</h3>
               <p class="poster-description">Self-taught graphic design work</p>
             </div>
           </li>
@@ -322,7 +322,7 @@ export const CARD_CONTENT = {
           <li class="poster-item">
             <img src="assets/posters/poster-5.png" alt="Poster Design 5" class="poster-image">
             <div class="poster-overlay">
-              <h3 class="poster-title">Design 5</h3>
+              <h3 class="poster-title">Two Tries</h3>
               <p class="poster-description">Self-taught graphic design work</p>
             </div>
           </li>
@@ -330,7 +330,7 @@ export const CARD_CONTENT = {
           <li class="poster-item">
             <img src="assets/posters/poster-6.png" alt="Poster Design 6" class="poster-image">
             <div class="poster-overlay">
-              <h3 class="poster-title">Design 6</h3>
+              <h3 class="poster-title">Cafe</h3>
               <p class="poster-description">Self-taught graphic design work</p>
             </div>
           </li>
@@ -338,7 +338,7 @@ export const CARD_CONTENT = {
           <li class="poster-item">
             <img src="assets/posters/poster-7.png" alt="Poster Design 7" class="poster-image">
             <div class="poster-overlay">
-              <h3 class="poster-title">Design 7</h3>
+              <h3 class="poster-title">Seek & Discover</h3>
               <p class="poster-description">Self-taught graphic design work</p>
             </div>
           </li>
@@ -346,7 +346,7 @@ export const CARD_CONTENT = {
           <li class="poster-item">
             <img src="assets/posters/poster-8.png" alt="Poster Design 8" class="poster-image">
             <div class="poster-overlay">
-              <h3 class="poster-title">Design 8</h3>
+              <h3 class="poster-title">50 Watts</h3>
               <p class="poster-description">Self-taught graphic design work</p>
             </div>
           </li>
@@ -354,7 +354,7 @@ export const CARD_CONTENT = {
           <li class="poster-item">
             <img src="assets/posters/poster-9.png" alt="Poster Design 9" class="poster-image">
             <div class="poster-overlay">
-              <h3 class="poster-title">Design 9</h3>
+              <h3 class="poster-title">Ripples</h3>
               <p class="poster-description">Self-taught graphic design work</p>
             </div>
           </li>
@@ -362,7 +362,7 @@ export const CARD_CONTENT = {
           <li class="poster-item">
             <img src="assets/posters/poster-10.png" alt="Poster Design 10" class="poster-image">
             <div class="poster-overlay">
-              <h3 class="poster-title">Design 10</h3>
+              <h3 class="poster-title">Cashmere</h3>
               <p class="poster-description">Self-taught graphic design work</p>
             </div>
           </li>
@@ -370,7 +370,7 @@ export const CARD_CONTENT = {
           <li class="poster-item">
             <img src="assets/posters/poster-11.png" alt="Poster Design 11" class="poster-image">
             <div class="poster-overlay">
-              <h3 class="poster-title">Design 11</h3>
+              <h3 class="poster-title">Syndrome</h3>
               <p class="poster-description">Self-taught graphic design work</p>
             </div>
           </li>
@@ -378,7 +378,7 @@ export const CARD_CONTENT = {
           <li class="poster-item">
             <img src="assets/posters/poster-12.png" alt="Poster Design 12" class="poster-image">
             <div class="poster-overlay">
-              <h3 class="poster-title">Design 12</h3>
+              <h3 class="poster-title">Tribe</h3>
               <p class="poster-description">Self-taught graphic design work</p>
             </div>
           </li>
@@ -386,7 +386,7 @@ export const CARD_CONTENT = {
           <li class="poster-item">
             <img src="assets/posters/poster-13.png" alt="Poster Design 13" class="poster-image">
             <div class="poster-overlay">
-              <h3 class="poster-title">Design 13</h3>
+              <h3 class="poster-title">Stars</h3>
               <p class="poster-description">Self-taught graphic design work</p>
             </div>
           </li>
@@ -394,7 +394,7 @@ export const CARD_CONTENT = {
           <li class="poster-item">
             <img src="assets/posters/poster-14.png" alt="Poster Design 14" class="poster-image">
             <div class="poster-overlay">
-              <h3 class="poster-title">Design 14</h3>
+              <h3 class="poster-title">Jump</h3>
               <p class="poster-description">Self-taught graphic design work</p>
             </div>
           </li>
@@ -402,7 +402,7 @@ export const CARD_CONTENT = {
           <li class="poster-item">
             <img src="assets/posters/poster-15.png" alt="Poster Design 15" class="poster-image">
             <div class="poster-overlay">
-              <h3 class="poster-title">Design 15</h3>
+              <h3 class="poster-title">Minatomichi</h3>
               <p class="poster-description">Self-taught graphic design work</p>
             </div>
           </li>
@@ -410,7 +410,7 @@ export const CARD_CONTENT = {
           <li class="poster-item">
             <img src="assets/posters/poster-16.png" alt="Poster Design 16" class="poster-image">
             <div class="poster-overlay">
-              <h3 class="poster-title">Design 16</h3>
+              <h3 class="poster-title">Sakyō-Ku</h3>
               <p class="poster-description">Self-taught graphic design work</p>
             </div>
           </li>

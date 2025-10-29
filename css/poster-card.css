@@ -180,7 +180,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.95);
+    background: var(--bg);
     z-index: 2000;
     display: none;
     align-items: center;
@@ -204,12 +204,11 @@
     position: absolute;
     top: 2rem;
     right: 2rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #fff;
+    background: transparent;
+    border: none;
+    color: var(--fg);
     width: 40px;
     height: 40px;
-    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -217,12 +216,6 @@
     cursor: pointer;
     transition: all 0.3s ease;
 }
-
-.poster-lightbox-close:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.1);
-}
-
 /* Responsive adjustments */
 @media (max-width: 1024px) {
     .poster-grid {
@@ -236,16 +229,20 @@
         gap: 1rem;
     }
     
+    /* Hide poster overlay on mobile for cleaner look */
     .poster-overlay {
-        opacity: 1;
-        transform: translateY(0);
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+        display: none;
     }
 }
 
 @media (max-width: 480px) {
     .poster-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+    
+    .poster-item {
+        border-radius: 8px;
     }
 }
 

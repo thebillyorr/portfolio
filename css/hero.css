@@ -13,7 +13,7 @@
 
 .hero-inner { position: relative; width: min(100%, var(--hero-maxw)); text-align:center; }
 .hero-title {
-    font-size: clamp(28px, 6vw, 80px);
+    font-size: clamp(50px, 6vw, 80px);
     line-height: 1.05; letter-spacing: -0.02em;
     margin: 0 0 16px;
     animation: fadeInUp 0.8s ease-out;
@@ -107,8 +107,8 @@
 }
 
 .gallery-item {
-    width: 140px;
-    height: 140px;
+    width: clamp(100px, 18vw, 140px);
+    height: clamp(100px, 18vw, 140px);
     border-radius: 16px;
     overflow: hidden;
     position: relative;

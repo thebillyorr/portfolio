@@ -73,8 +73,13 @@ function mountModule({ id, title, proof = 'click to expand', preset = 'S', leftC
     applyPreset(card, preset);
   }
 
-  attachDrag(card);
-  attachResize(card, card.querySelector('.resizable-handle'));
+  // Only enable drag/resize on desktop (not mobile)
+  const isMobile = window.innerWidth < 768;
+  if (!isMobile) {
+    attachDrag(card);
+    attachResize(card, card.querySelector('.resizable-handle'));
+  }
+  
   document.getElementById('playground').appendChild(card);
   return card;
 }
@@ -308,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
   mountModule({
     id: 'resume',
     title: 'Resume / Career',
-    preset: isMobile ? 'M' : 'L',
+    preset: isMobile ? 'S' : 'L',
     leftCells: isMobile ? 0 : 1,
     topCells: isMobile ? 0 : 1,
   });
@@ -316,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
   mountModule({
     id: 'posters',
     title: 'Design / Posters',
-    preset: isMobile ? 'L' : 'M',
+    preset: isMobile ? 'S' : 'M',
     leftCells: isMobile ? 0 : 14,
     topCells: isMobile ? 6 : 1
   });

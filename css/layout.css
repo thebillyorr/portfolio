@@ -410,8 +410,15 @@
   pointer-events: auto;
 }
 
-/* Always visible on touch devices (no hover) */
-@media (hover: none) {
+/* Hide resize handle on mobile since dragging/resizing is disabled */
+@media (max-width: 768px) {
+  .module-card .resizable-handle {
+    display: none;
+  }
+}
+
+/* Always visible on touch devices (no hover) - but only if not mobile */
+@media (hover: none) and (min-width: 769px) {
   .module-card .resizable-handle {
     opacity: 1;
     pointer-events: auto;
