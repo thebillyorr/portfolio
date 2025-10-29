@@ -1,0 +1,22 @@
+runtime: python39
+
+handlers:
+# Serve static files
+- url: /assets
+  static_dir: assets
+  
+- url: /css
+  static_dir: css
+  
+- url: /src
+  static_dir: src
+
+# Serve index.html for root
+- url: /
+  static_files: index.html
+  upload: index.html
+
+# Catch-all for other routes - serve index.html (for SPA routing if needed)
+- url: /.*
+  static_files: index.html
+  upload: index.html
