@@ -326,6 +326,14 @@ document.addEventListener('DOMContentLoaded', () => {
     topCells: isMobile ? 6 : 1
   });
 
+  mountModule({
+    id: 'steamed',
+    title: 'Project / Steamed',
+    preset: isMobile ? 'S' : 'L',
+    leftCells: isMobile ? 0 : 14,
+    topCells: isMobile ? 12 : 6
+  });
+
   // Theme toggle checkbox handler
   const themeCheckbox = document.querySelector('#checkbox');
   if (themeCheckbox) {

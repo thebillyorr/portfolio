@@ -1,0 +1,203 @@
+/* Steamed Card & Modal Styles */
+
+/* Modal Layout */
+.steamed-modal {
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    color: var(--text-primary);
+}
+
+.steamed-header {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.steamed-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    margin-bottom: 0.5rem;
+    /* Blue gradient base */
+    background: linear-gradient(135deg, #4b7db0 0%, #335b8c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.steamed-subtitle {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin: 0;
+    opacity: 0.9;
+}
+
+.steamed-content {
+    flex: 1;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.steamed-content p {
+    margin-bottom: 1.5rem;
+}
+
+.steamed-links {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding-top: 2rem;
+    align-items: center;
+}
+
+/* Image Helpers */
+.app-icon-lg {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    margin-bottom: 1.5rem;
+    padding: 0;
+    display: block;
+}
+
+.app-icon-md {
+    width: 80px;
+    height: 80px;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: block;
+}
+
+.app-icon-sm {
+    width: 96px;
+    height: 96px;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: block;
+    margin: 0 auto;
+}
+
+/* Buttons */
+.btn-appstore {
+    display: inline-block;
+    height: 80px;
+    transition: transform 0.2s;
+}
+.btn-appstore:hover {
+    transform: scale(1.05);
+}
+.btn-appstore img {
+    height: 100%;
+    width: auto;
+    display: block;
+}
+
+.btn-medium {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 600;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.2rem;
+    border-radius: 12px;
+    background: rgba(var(--bg-rgb), 0.5); /* Adaptive background */
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    transition: background 0.2s, transform 0.2s;
+    height: 80px;
+    box-sizing: border-box;
+}
+.btn-medium:hover {
+    background: rgba(128, 128, 128, 0.1);
+    transform: translateY(-2px);
+}
+.btn-medium img {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+}
+
+/* Card Preview Specifics */
+.steamed-preview {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    /* Transparent background as requested */
+    background: transparent;
+    text-align: center;
+}
+
+/* Fix vertical centering for Small card: Remove padding so flex centers it perfectly */
+.card-display-small.steamed-preview {
+    padding: 0;
+}
+
+/* Small Card */
+.steamed-small-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.steamed-small-label {
+    display: none; /* Hiding text for small tile since icon is huge */
+}
+
+/* Medium Card */
+.steamed-medium-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 100%;
+}
+.steamed-medium-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+.steamed-medium-label {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Large Card */
+.steamed-large-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    height: 100%;
+}
+.steamed-tagline-preview {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+    background: linear-gradient(135deg, #4b7db0 0%, #335b8c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.steamed-download-preview {
+    height: 80px;
+    transition: transform 0.2s;
+}
+.steamed-download-preview:hover {
+    transform: scale(1.05);
+}

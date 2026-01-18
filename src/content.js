@@ -422,6 +422,76 @@ export const CARD_CONTENT = {
         <img src="" alt="" class="poster-lightbox-image">
       </div>
     `
+  },
+
+  steamed: {
+    small: `
+      <div class="card-display-small steamed-preview">
+        <div class="steamed-small-container">
+          <img src="assets/logos/steamed.png" alt="Steamed App Icon" class="app-icon-sm">
+        </div>
+      </div>
+    `,
+    medium: `
+      <div class="card-display-medium steamed-preview">
+        <div class="steamed-medium-container">
+           <div class="steamed-medium-item">
+             <img src="assets/logos/steamed.png" alt="Steamed" class="app-icon-md">
+           </div>
+           
+           <div class="steamed-medium-item">
+             <img src="assets/logos/medium.png" alt="Medium" class="app-icon-md">
+           </div>
+        </div>
+      </div>
+    `,
+    large: `
+      <div class="card-display-large steamed-preview">
+        <div class="steamed-large-container">
+          <img src="assets/logos/steamed.png" alt="Steamed App Icon" class="app-icon-lg">
+          <h3 class="steamed-tagline-preview">Stop memorizing. Start reading.</h3>
+          <img src="assets/logos/appstore.svg" alt="Download on the App Store" class="steamed-download-preview">
+        </div>
+      </div>
+    `,
+    modal: `
+      <div class="steamed-modal">
+        <header class="steamed-header">
+          <img src="assets/logos/steamed.png" alt="Steamed Logo" class="app-icon-lg">
+          <h2 class="steamed-title">Steamed</h2>
+          <p class="steamed-subtitle">Stop memorizing. Start reading.</p>
+        </header>
+        
+        <div class="steamed-content">
+          <p>
+            I’ve always wanted to master Chinese reading, but I consistently hit a wall with existing tools. 
+            Most language apps prioritize rote memorization or audio-visual drills, leaving a massive gap for 
+            those who want to engage with long-form text. Frustrated by the lack of effective tools, I decided 
+            to build my own solution—navigating everything from Swift and Xcode, 
+            to NLP research on Chinese word segmentation> (HMM-Viterbi, DAGs).
+          </p>
+          
+          <p>
+            Steamed is more than just an app; it’s an end-to-end engineering lifecycle including product design, 
+            marketing, and navigating the App Store review process. It serves as a bridge for readers who want to stop 
+            memorizing characters and finally start reading them.
+          </p>
+          
+          <div class="steamed-links">
+            <!-- REPLACE WITH YOUR APP STORE LINK -->
+            <a href="https://apps.apple.com/us/app/steamed-chinese/id6757653453" class="btn-appstore" target="_blank" aria-label="Download on the App Store">
+              <img src="assets/logos/appstore.svg" alt="Download on the App Store">
+            </a>
+            
+            <!-- REPLACE WITH YOUR MEDIUM LINK -->
+            <a href="https://medium.com/@thebillyorr/chinese-word-segmentation-an-nlp-nightmare-eb67192ffa4b" class="btn-medium" target="_blank">
+              <img src="assets/logos/medium.png" alt="Medium Icon">
+              <span>Read the Story</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    `
   }
 
 };
