@@ -209,6 +209,8 @@
     gap: 10px;
     box-sizing: border-box; 
     opacity: 0.85;
+    justify-content: center;
+    text-align: center;
 }
 
 .btn-medium img {
