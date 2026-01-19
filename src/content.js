@@ -467,8 +467,8 @@ export const CARD_CONTENT = {
             I’ve always wanted to master Chinese reading, but I consistently hit a wall with existing tools. 
             Most language apps prioritize rote memorization or audio-visual drills, leaving a massive gap for 
             those who want to engage with long-form text. Frustrated by the lack of effective tools, I decided 
-            to build my own solution—navigating everything from Swift and Xcode, 
-            to NLP research on Chinese word segmentation> (HMM-Viterbi, DAGs).
+            to build my own solution; navigating everything from Swift and Xcode, 
+            to NLP research on Chinese word segmentation (HMM-Viterbi, DAGs).
           </p>
           
           <p>
@@ -478,12 +478,10 @@ export const CARD_CONTENT = {
           </p>
           
           <div class="steamed-links">
-            <!-- REPLACE WITH YOUR APP STORE LINK -->
             <a href="https://apps.apple.com/us/app/steamed-chinese/id6757653453" class="btn-appstore" target="_blank" aria-label="Download on the App Store">
               <img src="assets/logos/appstore.svg" alt="Download on the App Store">
             </a>
             
-            <!-- REPLACE WITH YOUR MEDIUM LINK -->
             <a href="https://medium.com/@thebillyorr/chinese-word-segmentation-an-nlp-nightmare-eb67192ffa4b" class="btn-medium" target="_blank">
               <img src="assets/logos/medium.png" alt="Medium Icon">
               <span>Read the Story</span>

@@ -1,203 +1,365 @@
-/* Steamed Card & Modal Styles */
+/* Steamed Card - Complete Rewrite */
+/* Variables inherited from layout.css/base.css 
+   --fg: foreground color (white)
+   --bg: background color
+   --glass-bg: glassmorphism background
+*/
 
-/* Modal Layout */
-.steamed-modal {
-    padding: 2rem;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    color: var(--text-primary);
-}
+/* =========================================
+   Preview Tiles (Grid)
+   ========================================= */
 
-.steamed-header {
-    margin-bottom: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.steamed-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin: 0;
-    margin-bottom: 0.5rem;
-    /* Blue gradient base */
-    background: linear-gradient(135deg, #4b7db0 0%, #335b8c 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.steamed-subtitle {
-    font-size: 1.4rem;
-    font-weight: 500;
-    color: var(--text-primary);
-    margin: 0;
-    opacity: 0.9;
-}
-
-.steamed-content {
-    flex: 1;
-    font-size: 1.1rem;
-    line-height: 1.6;
-}
-
-.steamed-content p {
-    margin-bottom: 1.5rem;
-}
-
-.steamed-links {
-    margin-top: auto;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    padding-top: 2rem;
-    align-items: center;
-}
-
-/* Image Helpers */
-.app-icon-lg {
-    width: 60px;
-    height: 60px;
-    border-radius: 14px;
-    background: #fff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    margin-bottom: 1.5rem;
-    padding: 0;
-    display: block;
-}
-
-.app-icon-md {
-    width: 80px;
-    height: 80px;
-    border-radius: 18px;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    display: block;
-}
-
-.app-icon-sm {
-    width: 96px;
-    height: 96px;
-    border-radius: 20px;
-    background: #fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    display: block;
-    margin: 0 auto;
-}
-
-/* Buttons */
-.btn-appstore {
-    display: inline-block;
-    height: 80px;
-    transition: transform 0.2s;
-}
-.btn-appstore:hover {
-    transform: scale(1.05);
-}
-.btn-appstore img {
-    height: 100%;
-    width: auto;
-    display: block;
-}
-
-.btn-medium {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    text-decoration: none;
-    color: var(--text-primary);
-    font-weight: 600;
-    padding: 0.8rem 1.5rem;
-    font-size: 1.2rem;
-    border-radius: 12px;
-    background: rgba(var(--bg-rgb), 0.5); /* Adaptive background */
-    border: 1px solid rgba(128, 128, 128, 0.2);
-    transition: background 0.2s, transform 0.2s;
-    height: 80px;
-    box-sizing: border-box;
-}
-.btn-medium:hover {
-    background: rgba(128, 128, 128, 0.1);
-    transform: translateY(-2px);
-}
-.btn-medium img {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-}
-
-/* Card Preview Specifics */
-.steamed-preview {
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    /* Transparent background as requested */
-    background: transparent;
-    text-align: center;
-}
-
-/* Fix vertical centering for Small card: Remove padding so flex centers it perfectly */
-.card-display-small.steamed-preview {
-    padding: 0;
-}
-
-/* Small Card */
+/* Small Tile */
 .steamed-small-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-}
-.steamed-small-label {
-    display: none; /* Hiding text for small tile since icon is huge */
-}
-
-/* Medium Card */
-.steamed-medium-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
     width: 100%;
     height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
+.steamed-small-container .app-icon-sm {
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+/* Medium Tile */
+.steamed-medium-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
 .steamed-medium-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
 }
-.steamed-medium-label {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    font-weight: 500;
+
+.steamed-medium-container .app-icon-md {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease;
 }
 
-/* Large Card */
+.steamed-medium-container .app-icon-md:hover {
+    transform: scale(1.05);
+}
+
+/* Large Tile */
 .steamed-large-container {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 1.5rem;
-    height: 100%;
+    padding: 2rem;
+    text-align: center;
 }
+
+.steamed-large-container .app-icon-lg {
+    width: 100px;
+    height: 100px;
+    border-radius: 22px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
+}
+
 .steamed-tagline-preview {
     font-size: 1.2rem;
     font-weight: 600;
     margin: 0;
-    background: linear-gradient(135deg, #4b7db0 0%, #335b8c 100%);
+    color: var(--fg);
+    opacity: 0.9;
+    line-height: 1.3;
+}
+
+.steamed-download-preview {
+    height: 60px;
+    width: auto;
+    max-width: 85%;
+    opacity: 0.9;
+    transition: opacity 0.2s, transform 0.2s;
+    flex-shrink: 0;
+}
+
+.steamed-download-preview:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   Modal (Full View) - Desktop Default
+   ========================================= */
+
+.steamed-modal {
+    width: 100%;
+    height: 100%;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center vertically on desktop */
+    overflow-y: auto; /* Allow scroll if needed on short screens */
+    color: var(--fg);
+    gap: 2rem;
+}
+
+.steamed-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex-shrink: 0; /* Prevent header from squishing */
+    position: relative; /* Context for z-index */
+    z-index: 2;         /* Ensure visible above any accidental overlays */
+}
+
+.steamed-header .app-icon-lg {
+    width: 120px;
+    height: 120px;
+    border-radius: 26px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    margin-bottom: 1.5rem;
+}
+
+.steamed-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    background: linear-gradient(135deg, #4b7db0, #a0cfff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
-.steamed-download-preview {
-    height: 80px;
-    transition: transform 0.2s;
+
+.steamed-subtitle {
+    font-size: 1.25rem;
+    color: var(--fg);
+    margin: 0;
+    font-weight: 500;
+    opacity: 0.75; /* Polster Gallery Match */
 }
-.steamed-download-preview:hover {
-    transform: scale(1.05);
+
+.steamed-content {
+    max-width: 600px;
+    width: 100%;
+    text-align: left;
+    line-height: 1.6;
+    font-size: 1.1rem;
+    color: var(--fg);
+}
+
+.steamed-content p {
+    margin-bottom: 1.5rem;
+    opacity: 0.85; /* Poster Gallery Match */
+}
+
+.steamed-links {
+    display: flex;
+    flex-direction: row; /* Side by side on desktop */
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    min-height: 60px; /* Force minimum height for alignment */
+}
+
+/* Shared Button Styles */
+.btn-appstore, 
+.btn-medium {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    height: 56px; /* Fixed height for parity */
+    text-decoration: none;
+}
+
+.btn-appstore:hover,
+.btn-medium:hover {
+    transform: translateY(-2px);
+    opacity: 0.7;
+}
+
+/* App Store Specifics */
+.btn-appstore img {
+    height: 100%;
+    width: auto;
+    display: block;
+}
+
+/* Medium Button Specifics */
+.btn-medium {
+    background: transparent; /* Works in Light & Dark */
+    border: 1px solid var(--fg);
+    border-radius: 12px;
+    padding: 0 1rem;
+    color: var(--fg);
+    font-weight: 600;
+    font-size: 1rem;
+    gap: 10px;
+    box-sizing: border-box; 
+    opacity: 0.85;
+}
+
+.btn-medium img {
+    height: 24px;
+    width: 24px;
+    border-radius: 4px;
+}
+
+/* =========================================
+   Mobile Overrides (Max Width 768px)
+   ========================================= */
+
+@media (max-width: 768px) {
+    .steamed-modal {
+        display: block; /* Disable flex centering so we can use margin/padding flow */
+        padding: 6rem 1.5rem 6rem 1.5rem; /* Large top padding to clear status bars/safe areas */
+        height: auto;   /* Let content dictate height */
+        min-height: 100%;
+        overflow-y: scroll; /* Always scrollable */
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .steamed-header {
+        margin-top: 0; 
+        margin-bottom: 2rem;
+        /* Flex centered in the mobile flow */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .steamed-header .app-icon-lg {
+        width: 100px !important;    /* Force explicit size */
+        height: 100px !important;   /* Force explicit size */
+        margin-bottom: 1rem;
+        flex-shrink: 0;             /* Never shrink me */
+        display: block;             /* Ensure block layout */
+        visibility: visible;        /* Ensure visible */
+        opacity: 1;                 /* Ensure opacity */
+    }
+
+    .steamed-title {
+        font-size: 2.5rem;
+    }
+
+    .steamed-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .steamed-content {
+        font-size: 1rem;
+        padding-bottom: 2rem; /* Space before buttons */
+    }
+
+    .steamed-links {
+        display: flex;
+        flex-direction: column; /* Stack vertically */
+        align-items: center;    /* Center align items to enforce width */
+        gap: 1rem;
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto; 
+    }
+
+    .btn-appstore, 
+    .btn-medium {
+        width: 240px; /* Fixed match width for both buttons */
+        height: 72px; /* Very tall touch targets */
+    }
+    
+    /* Ensure App Store badge fills the height properly within reason */
+    .btn-appstore {
+        padding: 0; 
+    }
+    
+    .btn-appstore img {
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+    }
+
+    .btn-medium {
+        font-size: 1.2rem; /* Larger text for mobile */
+    }
+}
+
+/* --- Mobile Specific Refinements --- */
+@media (max-width: 768px) {
+    .steamed-modal {
+        text-align: center; /* Center everything on mobile */
+        padding-top: 2rem; /* Reduced back to reasonable spacing */
+        box-sizing: border-box; /* Ensure padding doesn't break dimensions */
+        padding-bottom: 2rem;
+    }
+
+    .steamed-header {
+        align-items: center; /* Center logo and titles */
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 2; /* Ensure above any backdrop weirdness */
+        width: 100%;
+        flex-shrink: 0;
+    }
+
+    .app-icon-lg {
+        margin-bottom: 1.5rem;
+        margin-top: 1rem; /* Add explicit top margin to prevent cutoff */
+        width: 100px !important; /* Force bigger size and override clamp */
+        height: 100px !important;
+        flex-shrink: 0; /* Prevent crushing */
+        display: block;
+    }
+
+    .steamed-links {
+        flex-direction: column; /* Stack buttons vertically */
+        align-items: center;
+        width: 100%;
+        gap: 1rem;
+        padding-bottom: 1rem;
+    }
+    
+    .btn-appstore, 
+    .btn-medium {
+        width: 60%; /* Buttons take up 60% of card width */
+        max-width: 320px; /* Cap width for larger mobile screens */
+        height: 72px; /* Increased height for bigger impact */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+    }
+
+    .btn-medium img {
+    height: 35px;
+    width: 35px;
+    border-radius: 4px;
+}
+
+    /* Adjust SVG/Image inside centered buttons */
+    .btn-appstore img {
+        height: 100%; /* Fill the tall button */
+        width: auto;
+        display: block;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    .btn-medium {
+        /* Spread content slightly */
+        gap: 1rem; 
+        font-size: 1.1rem;
+    }
 }
