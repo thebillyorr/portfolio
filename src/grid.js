@@ -291,7 +291,9 @@ export function shove(layout, activeId, targetRect, bounds, visited = new Set(),
       const snapshot = layout[blockerId];
       layout[blockerId] = candidate;
 
-      if (shove(layout, activeId, layout[activeId], bounds, visited, pushOrder)) {
+      // Validate the MOVED blocker (chain reaction), then re-validate original
+      if (shove(layout, blockerId, candidate, bounds, visited, pushOrder) &&
+          shove(layout, activeId, layout[activeId], bounds, visited, pushOrder)) {
         moved = true;
         break;
       }
